@@ -5,10 +5,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class GetProductController {
+public class CreateProductFormController {
   @GetMapping("/products")
   public String getProduct(Model model) {
     model.addAttribute("product", new CreateProductRequest());
-    return "product";
+    return "product/form";
   }
 }

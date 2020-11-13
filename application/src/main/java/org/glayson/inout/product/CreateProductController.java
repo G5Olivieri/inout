@@ -24,7 +24,7 @@ public class CreateProductController {
   public String createProduct(@ModelAttribute CreateProductRequest request, Model model) {
     this.model = model;
     this.command.execute(new Product(request.getId(), request.getName()));
-    return "created/product";
+    return "product/product";
   }
 
   @EventListener

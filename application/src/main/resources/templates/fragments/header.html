@@ -1,0 +1,12 @@
+<header th:fragment="header(module)">
+  <nav>
+    <ul>
+      <li th:classappend="${module == 'home' ? 'active' : ''}">
+        <a href="#" th:href="@{/}" th:text="#{header.link.home}"></a>
+      </li>
+      <li th:classappend="${module == 'product' ? 'active' : ''}">
+        <a href="#" th:href="@{/products}" th:text="#{header.link.product}"></a>
+      </li>
+    </ul>
+  </nav>
+</header>

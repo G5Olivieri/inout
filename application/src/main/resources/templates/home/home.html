@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html th:replace="fragments/base :: html(#{home.title}, ~{ :: body})">
+<body>
+<header th:replace="fragments/header :: header('home')"></header>
+<main >
+  <h1 th:text="#{home.greeter}"></h1>
+</main>
+<footer th:replace="fragments/footer :: footer"></footer>
+</body>
+</html>

@@ -1,9 +1,5 @@
 <!DOCTYPE html>
-<html lang="${#locale.laguage}">
-<head>
-  <meta charset="UTF-8">
-  <title>Formulário Produto</title>
-</head>
+<html th:replace="fragments/base :: html(#{product.form.page.title}, ~{ :: body})">
 <body>
 <form action="#" th:action="@{/products}" th:object="${product}" method="post">
   <input type="number" th:field="*{id}"/>
