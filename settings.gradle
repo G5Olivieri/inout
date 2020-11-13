@@ -1,0 +1,2 @@
+rootProject.name = 'org.glayson.inout'
+include 'application', 'common', 'domain'

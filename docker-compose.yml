@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  app:
+    image: openjdk:15-alpine
+    working_dir: /app
+    command: ./gradlew bootRun --no-daemon
+    ports:
+      - "8080:8080"
+    volumes:
+    - .:/app
+    - gradle:/root/.gradle
+
+volumes:
+  gradle:
