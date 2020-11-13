@@ -5,14 +5,14 @@ import org.glayson.inout.domain.product.Product;
 import org.glayson.inout.domain.product.ProductCreatedEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@Controller
 public class CreateProductController {
-  private ResponseEntity<Product> response;
+  private Model model;
   private final CreateProductCommand command;
 
   @Autowired
@@ -21,13 +21,14 @@ public class CreateProductController {
   }
 
   @PostMapping("/products")
-  public ResponseEntity<Product> createProduct(@RequestBody CreateProductRequest request) {
-    this.command.execute(new Product(0, request.getName()));
-    return this.response;
+  public String createProduct(@ModelAttribute CreateProductRequest request, Model model) {
+    this.model = model;
+    this.command.execute(new Product(request.getId(), request.getName()));
+    return "created/product";
   }
 
   @EventListener
   public void listener(ProductCreatedEvent event) {
-    this.response = ResponseEntity.ok(event.getProduct());
+    this.model.addAttribute("product", event.getProduct());
   }
 }

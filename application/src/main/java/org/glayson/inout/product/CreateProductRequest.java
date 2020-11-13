@@ -1,6 +1,7 @@
 package org.glayson.inout.product;
 
 public class CreateProductRequest {
+  private int id;
   private String name;
 
   public String getName() {
@@ -9,5 +10,13 @@ public class CreateProductRequest {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public int getId() {
+    return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
   }
 }
