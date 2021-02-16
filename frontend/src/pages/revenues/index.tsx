@@ -1,51 +1,37 @@
 import React, { useState } from "react"
 import { format } from "date-fns"
-import { ptBR } from "date-fns/locale"
-import { Form } from "@app/pages/revenues/form"
 import { Modal } from "@app/components/modal"
-import { Revenue } from "@app/pages/revenues/revenue"
-
-const locales: Record<string, Locale> = {
-  'pt-BR': ptBR
-}
+import { Transaction } from "@app/components/transactions/transaction"
+import { TransactionForm } from "@app/components/transactions/transaction-form"
+import { TransactionList } from "@app/components/transactions/transaction-list"
+import { useTranslation } from "react-i18next"
 
 export const Revenues: React.FC = (): JSX.Element => {
+  const { t } = useTranslation()
   const [month, setMonth] = useState(format(new Date(), "yyyy-MM"))
-  const [revenues, setRevenues] = useState<Array<Revenue>>([])
+  const [revenues, setRevenues] = useState<Array<Transaction>>([])
   const [isOpen, setIsOpen] = useState(false)
 
-  const onChange = (event: any) => {
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setMonth(event.target.value)
   }
 
-  const openModal = () => {
+  const openModal = (_: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setIsOpen(true)
   }
 
-  const saveRevenue = (revenue: Revenue) => {
+  const saveRevenue = (revenue: Transaction) => {
     setRevenues([...revenues, revenue])
     setIsOpen(false)
   }
 
-  const currencyFormat = (number: number): string =>
-    new Intl.NumberFormat(navigator.language, { style: 'currency', currency: 'BRL' }).format(number)
-
-  const revenueItem = (revenue: Revenue, key: number): JSX.Element =>
-    <li key={key}>
-      { revenue.description }:&#160;
-      { currencyFormat(revenue.value / 100) } -&#160;
-      { format(revenue.date, "PP", { locale: locales[navigator.language] }) }
-    </li>
-
   return (
     <div>
-      <button onClick={openModal}>Adicionar</button>
-      <input type="month" onChange={onChange} value={month} aria-label="month" />
-      <ul>
-        {revenues.map(revenueItem)}
-      </ul>
+      <button onClick={openModal}>{t("add")}</button>
+      <input type="month" onChange={onChange} value={month} aria-label={t("month")} />
+      <TransactionList transactions={revenues} />
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-        <Form onSaveRevenue={saveRevenue}/>
+        <TransactionForm onSaveTransaction={saveRevenue}/>
       </Modal>
     </div>
   )

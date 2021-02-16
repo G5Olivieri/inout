@@ -1,17 +1,15 @@
 import React, { useState } from "react"
 import { format } from "date-fns"
-import { ptBR } from "date-fns/locale"
-import { Form } from "@app/pages/expenses/form"
+import { TransactionForm } from "@app/components/transactions/transaction-form"
 import { Modal } from "@app/components/modal"
-import { Expense } from "@app/pages/expenses/expense"
-
-const locales: Record<string, Locale> = {
-  'pt-BR': ptBR
-}
+import { Transaction } from "@app/components/transactions/transaction"
+import { TransactionList } from "@app/components/transactions/transaction-list"
+import { useTranslation } from "react-i18next"
 
 export const Expenses: React.FC = (): JSX.Element => {
+  const { t } = useTranslation()
   const [month, setMonth] = useState(format(new Date(), "yyyy-MM"))
-  const [expenses, setExpenses] = useState<Array<Expense>>([])
+  const [expenses, setExpenses] = useState<Array<Transaction>>([])
   const [isOpen, setIsOpen] = useState(false)
 
   const onChange = (event: any) => {
@@ -22,30 +20,18 @@ export const Expenses: React.FC = (): JSX.Element => {
     setIsOpen(true)
   }
 
-  const saveExpense = (expense: Expense) => {
+  const saveTransaction = (expense: Transaction) => {
     setExpenses([...expenses, expense])
     setIsOpen(false)
   }
 
-  const currencyFormat = (number: number): string =>
-    new Intl.NumberFormat(navigator.language, { style: 'currency', currency: 'BRL' }).format(number)
-
-  const expenseItem = (expense: Expense, key: number): JSX.Element =>
-    <li key={key}>
-      { expense.description }:&#160;
-      { currencyFormat(expense.value / 100) } -&#160;
-      { format(expense.date, "PP", { locale: locales[navigator.language] }) }
-    </li>
-
   return (
     <div>
-      <button onClick={openModal}>Adicionar</button>
-      <input type="month" onChange={onChange} value={month} aria-label="month" />
-      <ul>
-        {expenses.map(expenseItem)}
-      </ul>
+      <button onClick={openModal}>{t("add")}</button>
+      <input type="month" onChange={onChange} value={month} aria-label={t("month")} />
+      <TransactionList transactions={expenses} />
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-        <Form onSaveExpense={saveExpense}/>
+        <TransactionForm onSaveTransaction={saveTransaction}/>
       </Modal>
     </div>
   )
