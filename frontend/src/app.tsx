@@ -4,7 +4,9 @@ import { NavigationMenu } from '@app/components/navigation-menu';
 import { Home } from '@app/pages/home';
 import { Expenses } from '@app/pages/expenses';
 import { Revenues } from '@app/pages/revenues';
-import { InternacionalizationProvider } from '@app/internacionalizations/internacionalization-provider';
+import {
+  InternacionalizationProvider
+} from '@app/internacionalizations/internacionalization-provider';
 
 export const App: React.FC = (): JSX.Element => (
   <BrowserRouter>

@@ -5,8 +5,9 @@ interface ModalProps {
   onClose: () => void
 }
 
-export const Modal: React.FC<ModalProps> = ({ isOpen, children, onClose }): JSX.Element => {
-  const onCloseWrapper = (_: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
+export const Modal: React.FC<ModalProps> =
+  ({ isOpen, children, onClose }): JSX.Element => {
+  const onCloseWrapper = (): void => {
     onClose()
   }
 

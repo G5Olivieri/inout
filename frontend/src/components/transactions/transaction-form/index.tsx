@@ -7,7 +7,8 @@ interface FormProps {
   onSaveTransaction: (transaction: Transaction) => void
 }
 
-export const TransactionForm: React.FC<FormProps> = ({ onSaveTransaction }): JSX.Element => {
+export const TransactionForm: React.FC<FormProps> =
+  ({ onSaveTransaction }): JSX.Element => {
   const { t } = useTranslation()
   const [value, setValue] = useState("")
   const [description, setDescription] = useState("")

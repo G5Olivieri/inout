@@ -1,3 +1,4 @@
-export const getDefaultLanguage = () => "pt-BR"
+export const getDefaultLanguage = (): string => "pt-BR"
 
-export const getBrowserLanguage = () => navigator.language || getDefaultLanguage()
+export const getBrowserLanguage = (): string =>
+  navigator.language || getDefaultLanguage()

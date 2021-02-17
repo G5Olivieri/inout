@@ -1,4 +1,4 @@
-export const getDefaultCurrency = () => 'BRL'
+export const getDefaultCurrency = (): string => 'BRL'
 
 interface Options {
   language: string
@@ -9,5 +9,7 @@ export const formatCurrency = (
   number: number,
   { language, currency }: Options,
 ): string => {
-  return new Intl.NumberFormat(language, { style: 'currency', currency }).format(number)
+  return new Intl.NumberFormat(
+    language, { style: 'currency', currency }
+  ).format(number)
 }

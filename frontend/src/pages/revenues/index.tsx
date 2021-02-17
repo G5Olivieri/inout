@@ -16,7 +16,7 @@ export const Revenues: React.FC = (): JSX.Element => {
     setMonth(event.target.value)
   }
 
-  const openModal = (_: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const openModal = (): void => {
     setIsOpen(true)
   }
 
@@ -28,7 +28,12 @@ export const Revenues: React.FC = (): JSX.Element => {
   return (
     <div>
       <button onClick={openModal}>{t("add")}</button>
-      <input type="month" onChange={onChange} value={month} aria-label={t("month")} />
+      <input
+        type="month"
+        onChange={onChange}
+        value={month}
+        aria-label={t("month")}
+      />
       <TransactionList transactions={revenues} />
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <TransactionForm onSaveTransaction={saveRevenue}/>

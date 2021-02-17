@@ -12,7 +12,7 @@ export const Expenses: React.FC = (): JSX.Element => {
   const [expenses, setExpenses] = useState<Array<Transaction>>([])
   const [isOpen, setIsOpen] = useState(false)
 
-  const onChange = (event: any) => {
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setMonth(event.target.value)
   }
 
@@ -28,7 +28,12 @@ export const Expenses: React.FC = (): JSX.Element => {
   return (
     <div>
       <button onClick={openModal}>{t("add")}</button>
-      <input type="month" onChange={onChange} value={month} aria-label={t("month")} />
+      <input
+        type="month"
+        onChange={onChange}
+        value={month}
+        aria-label={t("month")}
+      />
       <TransactionList transactions={expenses} />
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <TransactionForm onSaveTransaction={saveTransaction}/>

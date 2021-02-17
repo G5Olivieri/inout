@@ -1,12 +1,15 @@
 import { Transaction } from "@app/components/transactions/transaction"
 import { format } from "date-fns"
-import { useInternacionalization } from "@app/internacionalizations/use-internacionalization"
+import {
+  useInternacionalization
+} from "@app/internacionalizations/use-internacionalization"
 
 interface TransactionListItemProps {
   transaction: Transaction
 }
 
-export const TransactionListItem: React.FC<TransactionListItemProps> = ({ transaction }): JSX.Element => {
+export const TransactionListItem: React.FC<TransactionListItemProps> =
+  ({ transaction }): JSX.Element => {
   const i18n = useInternacionalization()
   return (
     <li>

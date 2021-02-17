@@ -1,6 +1,8 @@
 import { I18nextProvider } from "react-i18next"
 import i18n from "@app/internacionalizations/translations/i18n"
-import { useInternacionalization } from "@app/internacionalizations/use-internacionalization"
+import {
+  useInternacionalization
+} from "@app/internacionalizations/use-internacionalization"
 
 export const TranslationProvider: React.FC = ({children}): JSX.Element => {
   const internacionalization = useInternacionalization()

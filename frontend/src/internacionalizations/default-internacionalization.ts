@@ -1,6 +1,13 @@
-import { formatCurrency, getDefaultCurrency } from "@app/internacionalizations/currency"
-import { getDateTimeLocaleFromLanguage } from "@app/internacionalizations/datetime"
-import { Internacionalization } from "@app/internacionalizations/internacionalization"
+import {
+  formatCurrency,
+  getDefaultCurrency
+} from "@app/internacionalizations/currency"
+import {
+  getDateTimeLocaleFromLanguage
+} from "@app/internacionalizations/datetime"
+import {
+  Internacionalization
+} from "@app/internacionalizations/internacionalization"
 import { getBrowserLanguage } from "@app/internacionalizations/language"
 
 export class DefaultInternacionalization implements Internacionalization {
