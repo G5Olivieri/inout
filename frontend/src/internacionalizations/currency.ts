@@ -7,9 +7,10 @@ interface Options {
 
 export const formatCurrency = (
   number: number,
-  { language, currency }: Options,
+  { language, currency }: Options
 ): string => {
-  return new Intl.NumberFormat(
-    language, { style: 'currency', currency }
-  ).format(number)
+  return new Intl.NumberFormat(language, {
+    style: 'currency',
+    currency,
+  }).format(number)
 }

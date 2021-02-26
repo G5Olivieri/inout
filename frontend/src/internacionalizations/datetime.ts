@@ -1,7 +1,7 @@
-import { ptBR } from "date-fns/locale"
+import { ptBR } from 'date-fns/locale'
 
 const locales: Record<string, Locale> = {
-  'pt-BR': ptBR
+  'pt-BR': ptBR,
 }
 
 export const getDefaultDateTimeLocale = (): Locale => locales['pt-BR']

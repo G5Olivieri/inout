@@ -1,26 +1,27 @@
-import React, { useState } from "react"
-import { format } from "date-fns"
-import { Transaction } from "@app/components/transactions/transaction"
-import { useTranslation } from "react-i18next"
+import React, { useState } from 'react'
+import { format } from 'date-fns'
+import { Transaction } from '@app/components/transactions/transaction'
+import { useTranslation } from 'react-i18next'
 
 interface FormProps {
   onSaveTransaction: (transaction: Transaction) => void
 }
 
-export const TransactionForm: React.FC<FormProps> =
-  ({ onSaveTransaction }): JSX.Element => {
+export const TransactionForm: React.FC<FormProps> = ({
+  onSaveTransaction,
+}): JSX.Element => {
   const { t } = useTranslation()
-  const [value, setValue] = useState("")
-  const [description, setDescription] = useState("")
+  const [value, setValue] = useState('')
+  const [description, setDescription] = useState('')
   const [date, setDate] = useState(new Date())
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    if (value === "") {
+    if (value === '') {
       return
     }
 
-    if (description === "") {
+    if (description === '') {
       return
     }
 
@@ -47,28 +48,31 @@ export const TransactionForm: React.FC<FormProps> =
     <form onSubmit={onSubmit}>
       <input
         type="number"
-        aria-label={t("value in cents")}
-        placeholder={t("value in cents")}
+        aria-label={t('value in cents')}
+        placeholder={t('value in cents')}
         min={1}
         value={value}
         onChange={onValueChange}
         required
-        autoFocus />
+        autoFocus
+      />
       <input
         type="text"
-        aria-label={t("description")}
-        placeholder={t("description")}
+        aria-label={t('description')}
+        placeholder={t('description')}
         value={description}
         onChange={onDescriptionChange}
-        required />
+        required
+      />
       <input
         type="date"
-        aria-label={t("date")}
-        placeholder={t("date")}
-        value={format(date, "yyyy-MM-dd")}
+        aria-label={t('date')}
+        placeholder={t('date')}
+        value={format(date, 'yyyy-MM-dd')}
         onChange={onDateChange}
-        required />
-      <button>Salvar</button>
+        required
+      />
+      <button>{t('to save')}</button>
     </form>
   )
 }
