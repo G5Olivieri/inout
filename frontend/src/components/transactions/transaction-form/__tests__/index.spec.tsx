@@ -1,9 +1,8 @@
 import React from 'react'
-import { NavigationMenu } from '@app/components/navigation-menu'
-import { render, screen } from '@testing-library/react'
-import { createMemoryHistory } from 'history'
+import { render, screen, fireEvent } from '@testing-library/react'
+import { TransactionForm } from '@app/components/transactions/transaction-form'
+import { Transaction } from '@app/components/transactions/transaction'
 import '@testing-library/jest-dom/extend-expect'
-import { Router } from 'react-router-dom'
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => {
@@ -19,21 +18,96 @@ jest.mock('react-i18next', () => ({
   },
 }))
 
-test('should have links to pages', async () => {
-  const history = createMemoryHistory()
-  render(
-    <Router history={history}>
-      <NavigationMenu />
-    </Router>
-  )
+test('should call onSaveTransaction', async () => {
+  let wasCalled = false
+  let transaction: Transaction = {
+    value: 0,
+    description: '',
+    date: new Date(),
+  }
+  const onSaveTransaction = (t: Transaction) => {
+    wasCalled = true
+    transaction = t
+  }
+  render(<TransactionForm onSaveTransaction={onSaveTransaction} />)
 
-  const links = screen.getAllByRole('link')
-  expect(links[0]).toHaveTextContent('Home screen')
-  expect(links[0]).toHaveAttribute('href', '/')
+  const valueInput = await screen.getByLabelText('value in cents')
+  const descriptionInput = await screen.getByLabelText('description')
+  const dateInput = await screen.getByLabelText('date')
+  const button = await screen.getByRole('button')
 
-  expect(links[1]).toHaveTextContent('Expense_plural')
-  expect(links[1]).toHaveAttribute('href', '/expenses')
+  fireEvent.change(valueInput, { target: { value: '400' } })
+  fireEvent.change(descriptionInput, { target: { value: 'Description' } })
+  fireEvent.change(dateInput, { target: { value: '2010-10-22' } })
+  fireEvent.click(button)
 
-  expect(links[2]).toHaveTextContent('Revenue_plural')
-  expect(links[2]).toHaveAttribute('href', '/revenues')
+  expect(wasCalled).toBeTruthy()
+  expect(transaction).toEqual({
+    value: 400,
+    description: 'Description',
+    date: new Date('2010-10-22'),
+  })
+})
+
+test('should not call onSaveTransaction when value is empty', async () => {
+  let wasCalled = false
+  let transaction: Transaction = {
+    value: 0,
+    description: '',
+    date: new Date('2011-03-20'),
+  }
+  const onSaveTransaction = (t: Transaction) => {
+    wasCalled = true
+    transaction = t
+  }
+  render(<TransactionForm onSaveTransaction={onSaveTransaction} />)
+
+  const valueInput = await screen.getByLabelText('value in cents')
+  const descriptionInput = await screen.getByLabelText('description')
+  const dateInput = await screen.getByLabelText('date')
+  const button = await screen.getByRole('button')
+
+  fireEvent.change(valueInput, { target: { value: '' } })
+  fireEvent.change(descriptionInput, { target: { value: 'Description' } })
+  fireEvent.change(dateInput, { target: { value: '2010-10-22' } })
+  fireEvent.click(button)
+
+  expect(wasCalled).toBeFalsy()
+  expect(transaction).toEqual({
+    value: 0,
+    description: '',
+    date: new Date('2011-03-20'),
+  })
+})
+
+// eslint-disable-next-line max-len
+test('should not call onSaveTransaction when description is empty', async () => {
+  let wasCalled = false
+  let transaction: Transaction = {
+    value: 0,
+    description: '',
+    date: new Date('2011-03-20'),
+  }
+  const onSaveTransaction = (t: Transaction) => {
+    wasCalled = true
+    transaction = t
+  }
+  render(<TransactionForm onSaveTransaction={onSaveTransaction} />)
+
+  const valueInput = await screen.getByLabelText('value in cents')
+  const descriptionInput = await screen.getByLabelText('description')
+  const dateInput = await screen.getByLabelText('date')
+  const button = await screen.getByRole('button')
+
+  fireEvent.change(valueInput, { target: { value: '400' } })
+  fireEvent.change(descriptionInput, { target: { value: '' } })
+  fireEvent.change(dateInput, { target: { value: '2010-10-22' } })
+  fireEvent.click(button)
+
+  expect(wasCalled).toBeFalsy()
+  expect(transaction).toEqual({
+    value: 0,
+    description: '',
+    date: new Date('2011-03-20'),
+  })
 })
