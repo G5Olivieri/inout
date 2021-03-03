@@ -10,6 +10,7 @@
     "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended"
   ],
+  "ignorePatterns": ["scripts/*.js"],
   "rules": {
     "prettier/prettier": ["error", {
       "semi": false,
