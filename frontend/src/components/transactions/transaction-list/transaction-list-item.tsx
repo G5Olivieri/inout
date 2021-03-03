@@ -1,5 +1,4 @@
 import { Transaction } from '@app/components/transactions/transaction'
-import { format } from 'date-fns'
 import { useInternacionalization } from '@app/internacionalizations/use-internacionalization'
 
 interface TransactionListItemProps {
@@ -14,7 +13,7 @@ export const TransactionListItem: React.FC<TransactionListItemProps> = ({
     <li>
       {transaction.description}:&#160;
       {i18n.formatCurrency(transaction.value / 100)} -&#160;
-      {format(transaction.date, 'PP', { locale: i18n.getDateTimeLocale() })}
+      {i18n.formatDate(transaction.date)}
     </li>
   )
 }

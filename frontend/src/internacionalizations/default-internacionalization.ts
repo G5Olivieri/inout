@@ -2,9 +2,13 @@ import {
   formatCurrency,
   getDefaultCurrency,
 } from '@app/internacionalizations/currency'
-import { getDateTimeLocaleFromLanguage } from '@app/internacionalizations/datetime'
+import {
+  getDateFormat,
+  getDateTimeLocaleFromLanguage,
+} from '@app/internacionalizations/datetime'
 import { Internacionalization } from '@app/internacionalizations/internacionalization'
 import { getBrowserLanguage } from '@app/internacionalizations/language'
+import { format } from 'date-fns'
 
 export class DefaultInternacionalization implements Internacionalization {
   public getDateTimeLocale(): Locale {
@@ -20,5 +24,9 @@ export class DefaultInternacionalization implements Internacionalization {
       language: this.getLanguage(),
       currency: getDefaultCurrency(),
     })
+  }
+
+  public formatDate(date: Date): string {
+    return format(date, getDateFormat(this.getLanguage()))
   }
 }
