@@ -1,22 +1,8 @@
 import React from 'react'
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent } from '@app/tests/setup'
 import { TransactionForm } from '@app/components/transactions/transaction-form'
 import { Transaction } from '@app/components/transactions/transaction'
 import '@testing-library/jest-dom/extend-expect'
-
-jest.mock('react-i18next', () => ({
-  useTranslation: () => {
-    return {
-      t: (str: string) => str,
-      i18n: {
-        changeLanguage: () =>
-          new Promise(() => {
-            /* empty */
-          }),
-      },
-    }
-  },
-}))
 
 test('should call onSaveTransaction', async () => {
   let wasCalled = false

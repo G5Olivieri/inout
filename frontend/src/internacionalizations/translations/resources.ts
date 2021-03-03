@@ -1,6 +1,6 @@
 // prettier-ignore
 const resources = {
-  "pt-BR": {
+  'pt-BR': {
     translation: {
       'revenue': 'receita',
       'revenue_plural': 'receitas',
@@ -11,7 +11,8 @@ const resources = {
       'value in cents': 'valor em centavos',
       'description': 'descrição',
       'date': 'data',
-      'to save': 'salvar'
+      'to save': 'salvar',
+      'home screen': 'tela inicial',
     }
   }
 }

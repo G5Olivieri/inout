@@ -1,31 +1,10 @@
 import React from 'react'
 import { NavigationMenu } from '@app/components/navigation-menu'
-import { render, screen } from '@testing-library/react'
-import { createMemoryHistory } from 'history'
 import '@testing-library/jest-dom/extend-expect'
-import { Router } from 'react-router-dom'
-
-jest.mock('react-i18next', () => ({
-  useTranslation: () => {
-    return {
-      t: (str: string) => str,
-      i18n: {
-        changeLanguage: () =>
-          new Promise(() => {
-            /* empty */
-          }),
-      },
-    }
-  },
-}))
+import { render, screen } from '@app/tests/setup'
 
 test('should have links to pages', async () => {
-  const history = createMemoryHistory()
-  render(
-    <Router history={history}>
-      <NavigationMenu />
-    </Router>
-  )
+  render(<NavigationMenu />)
 
   const links = screen.getAllByRole('link')
   expect(links[0]).toHaveTextContent('Home screen')
