@@ -1,3 +1,4 @@
+import React from 'react'
 import { Transaction } from '@app/components/transactions/transaction'
 import { TransactionListItem } from '@app/components/transactions/transaction-list/transaction-list-item'
 
