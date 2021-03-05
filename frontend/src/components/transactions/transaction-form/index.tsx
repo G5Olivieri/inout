@@ -46,33 +46,39 @@ export const TransactionForm: React.FC<FormProps> = ({
 
   return (
     <form onSubmit={onSubmit}>
+      <label htmlFor="amount">{t('input amount in cents')}:</label>
       <input
         type="number"
-        aria-label={t('value in cents')}
-        placeholder={t('value in cents')}
+        placeholder={t('amount in cents')}
         min={1}
         value={value}
         onChange={onValueChange}
         required
+        name="amount"
+        id="amount"
         autoFocus
       />
+      <label htmlFor="description">{t('input description')}:</label>
       <input
         type="text"
-        aria-label={t('description')}
         placeholder={t('description')}
         value={description}
         onChange={onDescriptionChange}
+        name="description"
+        id="description"
         required
       />
+      <label htmlFor="date">{t('input date')}:</label>
       <input
         type="date"
-        aria-label={t('date')}
         placeholder={t('date')}
         value={format(date, 'yyyy-MM-dd')}
         onChange={onDateChange}
+        name="date"
+        id="date"
         required
       />
-      <button>{t('to save')}</button>
+      <button type="submit">{t('to save')}</button>
     </form>
   )
 }

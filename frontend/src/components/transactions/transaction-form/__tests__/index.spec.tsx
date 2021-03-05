@@ -1,34 +1,51 @@
 import React from 'react'
-import { render, screen, fireEvent } from '@app/tests/setup'
+import { render, fireEvent } from '@app/tests/setup'
 import { TransactionForm } from '@app/components/transactions/transaction-form'
-import { Transaction } from '@app/components/transactions/transaction'
 import '@testing-library/jest-dom/extend-expect'
 
-test('should call onSaveTransaction', async () => {
-  let wasCalled = false
-  let transaction: Transaction = {
-    value: 0,
-    description: '',
-    date: new Date(),
-  }
-  const onSaveTransaction = (t: Transaction) => {
-    wasCalled = true
-    transaction = t
-  }
-  render(<TransactionForm onSaveTransaction={onSaveTransaction} />)
+const onSaveTransaction = jest.fn()
 
-  const valueInput = await screen.getByLabelText('value in cents')
-  const descriptionInput = await screen.getByLabelText('description')
-  const dateInput = await screen.getByLabelText('date')
-  const button = await screen.getByRole('button')
+type ResultRenderTransaction = {
+  valueInput: HTMLElement
+  descriptionInput: HTMLElement
+  dateInput: HTMLElement
+  button: HTMLElement
+}
+
+const renderTransactionForm = (): ResultRenderTransaction => {
+  const result = render(
+    <TransactionForm onSaveTransaction={onSaveTransaction} />
+  )
+  const valueInput = result.getByLabelText('input amount in cents:')
+  const descriptionInput = result.getByLabelText('input description:')
+  const dateInput = result.getByLabelText('input date:')
+  const button = result.getByRole('button')
+  return {
+    valueInput,
+    descriptionInput,
+    dateInput,
+    button,
+  }
+}
+
+beforeEach(() => {
+  onSaveTransaction.mockReset()
+})
+
+test('should call onSaveTransaction', async () => {
+  const {
+    valueInput,
+    descriptionInput,
+    dateInput,
+    button,
+  } = renderTransactionForm()
 
   fireEvent.change(valueInput, { target: { value: '400' } })
   fireEvent.change(descriptionInput, { target: { value: 'Description' } })
   fireEvent.change(dateInput, { target: { value: '2010-10-22' } })
   fireEvent.click(button)
 
-  expect(wasCalled).toBeTruthy()
-  expect(transaction).toEqual({
+  expect(onSaveTransaction).toHaveBeenNthCalledWith(1, {
     value: 400,
     description: 'Description',
     date: new Date('2010-10-22'),
@@ -36,64 +53,34 @@ test('should call onSaveTransaction', async () => {
 })
 
 test('should not call onSaveTransaction when value is empty', async () => {
-  let wasCalled = false
-  let transaction: Transaction = {
-    value: 0,
-    description: '',
-    date: new Date('2011-03-20'),
-  }
-  const onSaveTransaction = (t: Transaction) => {
-    wasCalled = true
-    transaction = t
-  }
-  render(<TransactionForm onSaveTransaction={onSaveTransaction} />)
-
-  const valueInput = await screen.getByLabelText('value in cents')
-  const descriptionInput = await screen.getByLabelText('description')
-  const dateInput = await screen.getByLabelText('date')
-  const button = await screen.getByRole('button')
+  const {
+    valueInput,
+    descriptionInput,
+    dateInput,
+    button,
+  } = renderTransactionForm()
 
   fireEvent.change(valueInput, { target: { value: '' } })
   fireEvent.change(descriptionInput, { target: { value: 'Description' } })
   fireEvent.change(dateInput, { target: { value: '2010-10-22' } })
   fireEvent.click(button)
 
-  expect(wasCalled).toBeFalsy()
-  expect(transaction).toEqual({
-    value: 0,
-    description: '',
-    date: new Date('2011-03-20'),
-  })
+  expect(onSaveTransaction).not.toHaveBeenCalled()
 })
 
 // eslint-disable-next-line max-len
 test('should not call onSaveTransaction when description is empty', async () => {
-  let wasCalled = false
-  let transaction: Transaction = {
-    value: 0,
-    description: '',
-    date: new Date('2011-03-20'),
-  }
-  const onSaveTransaction = (t: Transaction) => {
-    wasCalled = true
-    transaction = t
-  }
-  render(<TransactionForm onSaveTransaction={onSaveTransaction} />)
-
-  const valueInput = await screen.getByLabelText('value in cents')
-  const descriptionInput = await screen.getByLabelText('description')
-  const dateInput = await screen.getByLabelText('date')
-  const button = await screen.getByRole('button')
+  const {
+    valueInput,
+    descriptionInput,
+    dateInput,
+    button,
+  } = renderTransactionForm()
 
   fireEvent.change(valueInput, { target: { value: '400' } })
   fireEvent.change(descriptionInput, { target: { value: '' } })
   fireEvent.change(dateInput, { target: { value: '2010-10-22' } })
   fireEvent.click(button)
 
-  expect(wasCalled).toBeFalsy()
-  expect(transaction).toEqual({
-    value: 0,
-    description: '',
-    date: new Date('2011-03-20'),
-  })
+  expect(onSaveTransaction).not.toHaveBeenCalled()
 })
