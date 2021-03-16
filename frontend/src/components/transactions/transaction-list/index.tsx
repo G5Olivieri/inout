@@ -8,10 +8,13 @@ interface TransactionListProps {
 
 export const TransactionList: React.FC<TransactionListProps> = ({
   transactions,
-}): JSX.Element => (
-  <ul>
-    {transactions.map((t, i) => (
-      <TransactionListItem key={i} transaction={t} />
-    ))}
-  </ul>
-)
+}): JSX.Element => {
+  if (transactions.length === 0) return <></>
+  return (
+    <ul>
+      {transactions.map((t, i) => (
+        <TransactionListItem key={i} transaction={t} />
+      ))}
+    </ul>
+  )
+}

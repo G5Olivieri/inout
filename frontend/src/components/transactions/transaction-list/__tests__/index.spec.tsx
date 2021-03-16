@@ -11,3 +11,10 @@ test('should call transaction-list-item to each transaction', async () => {
   const list = await screen.getByRole('list')
   expect(list.children.length).toEqual(transactions.length)
 })
+
+test('should be empty', async () => {
+  const transactions: Array<Transaction> = []
+  render(<TransactionList transactions={transactions} />)
+  const list = await screen.queryByRole('list')
+  expect(list).not.toBeInTheDocument()
+})
