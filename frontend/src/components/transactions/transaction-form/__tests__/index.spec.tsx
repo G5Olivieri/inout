@@ -1,4 +1,3 @@
-import React from 'react'
 import { render, fireEvent } from '@app/tests/setup'
 import { TransactionForm } from '@app/components/transactions/transaction-form'
 import '@testing-library/jest-dom/extend-expect'
@@ -28,59 +27,61 @@ const renderTransactionForm = (): ResultRenderTransaction => {
   }
 }
 
-beforeEach(() => {
-  onSaveTransaction.mockReset()
-})
-
-test('should call onSaveTransaction', async () => {
-  const {
-    valueInput,
-    descriptionInput,
-    dateInput,
-    button,
-  } = renderTransactionForm()
-
-  fireEvent.change(valueInput, { target: { value: '400' } })
-  fireEvent.change(descriptionInput, { target: { value: 'Description' } })
-  fireEvent.change(dateInput, { target: { value: '2010-10-22' } })
-  fireEvent.click(button)
-
-  expect(onSaveTransaction).toHaveBeenNthCalledWith(1, {
-    value: 400,
-    description: 'Description',
-    date: new Date('2010-10-22'),
+describe('Component - TransactionForm', () => {
+  beforeEach(() => {
+    onSaveTransaction.mockReset()
   })
-})
 
-test('should not call onSaveTransaction when value is empty', async () => {
-  const {
-    valueInput,
-    descriptionInput,
-    dateInput,
-    button,
-  } = renderTransactionForm()
+  test('should call onSaveTransaction', async () => {
+    const {
+      valueInput,
+      descriptionInput,
+      dateInput,
+      button,
+    } = renderTransactionForm()
 
-  fireEvent.change(valueInput, { target: { value: '' } })
-  fireEvent.change(descriptionInput, { target: { value: 'Description' } })
-  fireEvent.change(dateInput, { target: { value: '2010-10-22' } })
-  fireEvent.click(button)
+    fireEvent.change(valueInput, { target: { value: '400' } })
+    fireEvent.change(descriptionInput, { target: { value: 'Description' } })
+    fireEvent.change(dateInput, { target: { value: '2010-10-22' } })
+    fireEvent.click(button)
 
-  expect(onSaveTransaction).not.toHaveBeenCalled()
-})
+    expect(onSaveTransaction).toHaveBeenNthCalledWith(1, {
+      value: 400,
+      description: 'Description',
+      date: new Date('2010-10-22'),
+    })
+  })
 
-// eslint-disable-next-line max-len
-test('should not call onSaveTransaction when description is empty', async () => {
-  const {
-    valueInput,
-    descriptionInput,
-    dateInput,
-    button,
-  } = renderTransactionForm()
+  test('should not call onSaveTransaction when value is empty', async () => {
+    const {
+      valueInput,
+      descriptionInput,
+      dateInput,
+      button,
+    } = renderTransactionForm()
 
-  fireEvent.change(valueInput, { target: { value: '400' } })
-  fireEvent.change(descriptionInput, { target: { value: '' } })
-  fireEvent.change(dateInput, { target: { value: '2010-10-22' } })
-  fireEvent.click(button)
+    fireEvent.change(valueInput, { target: { value: '' } })
+    fireEvent.change(descriptionInput, { target: { value: 'Description' } })
+    fireEvent.change(dateInput, { target: { value: '2010-10-22' } })
+    fireEvent.click(button)
 
-  expect(onSaveTransaction).not.toHaveBeenCalled()
+    expect(onSaveTransaction).not.toHaveBeenCalled()
+  })
+
+  // eslint-disable-next-line max-len
+  test('should not call onSaveTransaction when description is empty', async () => {
+    const {
+      valueInput,
+      descriptionInput,
+      dateInput,
+      button,
+    } = renderTransactionForm()
+
+    fireEvent.change(valueInput, { target: { value: '400' } })
+    fireEvent.change(descriptionInput, { target: { value: '' } })
+    fireEvent.change(dateInput, { target: { value: '2010-10-22' } })
+    fireEvent.click(button)
+
+    expect(onSaveTransaction).not.toHaveBeenCalled()
+  })
 })

@@ -9,7 +9,7 @@ export const createTransaction = (): Transaction => ({
 })
 
 export const createTransactions = (
-  size = faker.random.number(10)
+  size = faker.random.number({ min: 1, max: 10 })
 ): Array<Transaction> => {
   return _.times<Transaction>(size, createTransaction)
 }

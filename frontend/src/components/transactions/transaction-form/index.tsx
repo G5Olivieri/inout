@@ -46,6 +46,16 @@ export const TransactionForm: React.FC<FormProps> = ({
 
   return (
     <form onSubmit={onSubmit}>
+      <label htmlFor="description">{t('input description')}:</label>
+      <input
+        type="text"
+        placeholder={t('description')}
+        value={description}
+        onChange={onDescriptionChange}
+        name="description"
+        id="description"
+        required
+      />
       <label htmlFor="amount">{t('input amount in cents')}:</label>
       <input
         type="number"
@@ -57,16 +67,6 @@ export const TransactionForm: React.FC<FormProps> = ({
         name="amount"
         id="amount"
         autoFocus
-      />
-      <label htmlFor="description">{t('input description')}:</label>
-      <input
-        type="text"
-        placeholder={t('description')}
-        value={description}
-        onChange={onDescriptionChange}
-        name="description"
-        id="description"
-        required
       />
       <label htmlFor="date">{t('input date')}:</label>
       <input

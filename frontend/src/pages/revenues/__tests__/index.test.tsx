@@ -1,4 +1,3 @@
-import React from 'react'
 import { fireEvent, render } from '@app/tests/setup'
 import { Revenues } from '@app/pages/revenues'
 import '@testing-library/jest-dom/extend-expect'

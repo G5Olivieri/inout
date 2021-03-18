@@ -1,20 +1,15 @@
 import React, { useState } from 'react'
-import { format } from 'date-fns'
 import { TransactionForm } from '@app/components/transactions/transaction-form'
 import { Modal } from '@app/components/modal'
 import { Transaction } from '@app/components/transactions/transaction'
 import { TransactionList } from '@app/components/transactions/transaction-list'
 import { useTranslation } from 'react-i18next'
+import format from 'date-fns/format'
 
 export const Expenses: React.FC = (): JSX.Element => {
   const { t } = useTranslation()
-  const [month, setMonth] = useState(format(new Date(), 'yyyy-MM'))
   const [expenses, setExpenses] = useState<Array<Transaction>>([])
   const [isOpen, setIsOpen] = useState(false)
-
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setMonth(event.target.value)
-  }
 
   const openModal = () => {
     setIsOpen(true)
@@ -30,8 +25,7 @@ export const Expenses: React.FC = (): JSX.Element => {
       <button onClick={openModal}>{t('add')}</button>
       <input
         type="month"
-        onChange={onChange}
-        value={month}
+        value={format(new Date(), 'yyyy-MM')}
         aria-label={t('month')}
       />
       <TransactionList transactions={expenses} />
