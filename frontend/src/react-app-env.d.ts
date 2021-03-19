@@ -1,6 +1,4 @@
 /// <reference types="node" />
-// eslint-disable-next-line
-/// <reference types="react" />
 /// <reference types="react-dom" />
 
 declare namespace NodeJS {

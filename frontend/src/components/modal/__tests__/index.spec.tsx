@@ -1,3 +1,4 @@
+import React from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { Modal } from '@app/components/modal/index'
 import '@testing-library/jest-dom/extend-expect'

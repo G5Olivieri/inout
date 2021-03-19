@@ -1,5 +1,5 @@
 import React from 'react'
-import { Transaction } from '@app/components/transactions/transaction'
+import { Transaction } from '@app/core/transactions/transaction'
 import { TransactionListItem } from '@app/components/transactions/transaction-list/transaction-list-item'
 
 interface TransactionListProps {
@@ -11,7 +11,7 @@ export const TransactionList: React.FC<TransactionListProps> = ({
 }): JSX.Element => {
   if (transactions.length === 0) return <></>
   return (
-    <ul>
+    <ul role="list">
       {transactions.map((t, i) => (
         <TransactionListItem key={i} transaction={t} />
       ))}

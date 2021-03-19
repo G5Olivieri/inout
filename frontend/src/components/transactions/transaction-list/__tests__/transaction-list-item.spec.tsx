@@ -1,3 +1,4 @@
+import React from 'react'
 import { render, screen } from '@app/tests/setup'
 import { TransactionListItem } from '@app/components/transactions/transaction-list/transaction-list-item'
 import '@testing-library/jest-dom/extend-expect'

@@ -1,9 +1,9 @@
+import React from 'react'
 import { fireEvent, render } from '@app/tests/setup'
 import { Expenses } from '@app/pages/expenses'
 import '@testing-library/jest-dom/extend-expect'
-import assert from 'assert'
 
-const addTransaction = (form: HTMLFormElement) => {
+const addTransaction = (form: HTMLElement) => {
   const [valueInput, descriptionInput, dateInput] = Array.from(
     form.querySelectorAll('input')
   )
@@ -13,6 +13,7 @@ const addTransaction = (form: HTMLFormElement) => {
   fireEvent.change(dateInput, { target: { value: '2010-10-22' } })
   fireEvent.click(button)
 }
+
 describe('Page - Expenses', () => {
   test('should not render form', async () => {
     const result = render(<Expenses />)
@@ -42,10 +43,10 @@ describe('Page - Expenses', () => {
 
     fireEvent.click(addButton)
 
-    const form = result.container.querySelector('form')
-    assert(form !== null)
+    const form = await result.findByRole('form')
     addTransaction(form)
-    const list = result.getByRole('list')
+
+    const list = await result.findByRole('list')
 
     expect(form).not.toBeInTheDocument()
     expect(addButton).toHaveTextContent('add')

@@ -1,4 +1,5 @@
-import { DomainEvents } from '@app/events/domain-events'
+import React from 'react'
+import { DomainEvents } from '@app/core/events/domain-events'
 
 class TestEvent {
   public constructor(public readonly value: number) {}

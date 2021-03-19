@@ -1,7 +1,7 @@
-import { EventPublisher } from '@app/events/event-publisher'
-import { EventSubscriber } from '@app/events/event-subscriber'
-import { Action } from '@app/events/action'
-import { EventType } from '@app/events/event-type'
+import { EventPublisher } from '@app/core/events/event-publisher'
+import { EventSubscriber } from '@app/core/events/event-subscriber'
+import { Action } from '@app/core/events/action'
+import { EventType } from '@app/core/events/event-type'
 
 export class DomainEvents implements EventSubscriber, EventPublisher {
   private readonly listeners = new Map<string, Array<Action<unknown>>>()

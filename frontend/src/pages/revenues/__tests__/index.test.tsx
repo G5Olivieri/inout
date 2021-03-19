@@ -1,3 +1,4 @@
+import React from 'react'
 import { fireEvent, render } from '@app/tests/setup'
 import { Revenues } from '@app/pages/revenues'
 import '@testing-library/jest-dom/extend-expect'
@@ -46,7 +47,7 @@ describe('Page - Revenues', () => {
     const form = result.container.querySelector('form')
     assert(form !== null)
     addTransaction(form)
-    const list = result.getByRole('list')
+    const list = await result.findByRole('list')
 
     expect(form).not.toBeInTheDocument()
     expect(addButton).toHaveTextContent('add')

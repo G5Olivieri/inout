@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { format } from 'date-fns'
-import { Transaction } from '@app/components/transactions/transaction'
+import { Transaction } from '@app/core/transactions/transaction'
 import { useTranslation } from 'react-i18next'
 
 interface FormProps {
@@ -45,7 +45,7 @@ export const TransactionForm: React.FC<FormProps> = ({
   }
 
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={onSubmit} role="form">
       <label htmlFor="description">{t('input description')}:</label>
       <input
         type="text"

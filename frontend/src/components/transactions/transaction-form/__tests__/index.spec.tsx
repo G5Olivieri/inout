@@ -1,3 +1,4 @@
+import React from 'react'
 import { render, fireEvent } from '@app/tests/setup'
 import { TransactionForm } from '@app/components/transactions/transaction-form'
 import '@testing-library/jest-dom/extend-expect'
@@ -30,6 +31,14 @@ const renderTransactionForm = (): ResultRenderTransaction => {
 describe('Component - TransactionForm', () => {
   beforeEach(() => {
     onSaveTransaction.mockReset()
+  })
+
+  test('should render form', async () => {
+    const result = render(
+      <TransactionForm onSaveTransaction={onSaveTransaction} />
+    )
+
+    expect(result.getByRole('form')).toBeInTheDocument()
   })
 
   test('should call onSaveTransaction', async () => {

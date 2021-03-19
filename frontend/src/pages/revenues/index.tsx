@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Modal } from '@app/components/modal'
-import { Transaction } from '@app/components/transactions/transaction'
+import { Transaction } from '@app/core/transactions/transaction'
 import { TransactionForm } from '@app/components/transactions/transaction-form'
 import { TransactionList } from '@app/components/transactions/transaction-list'
 import { useTranslation } from 'react-i18next'
@@ -27,6 +27,7 @@ export const Revenues: React.FC = (): JSX.Element => {
         type="month"
         value={format(new Date(), 'yyyy-MM')}
         aria-label={t('month')}
+        readOnly
       />
       <TransactionList transactions={revenues} />
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>

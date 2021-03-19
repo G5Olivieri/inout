@@ -1,6 +1,6 @@
 import faker from 'faker'
 import _ from 'lodash'
-import { Transaction } from '@app/components/transactions/transaction'
+import { Transaction } from '@app/core/transactions/transaction'
 
 export const createTransaction = (): Transaction => ({
   value: faker.random.number(10000),
