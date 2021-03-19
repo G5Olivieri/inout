@@ -44,9 +44,18 @@ describe('Page - Revenues', () => {
 
     fireEvent.click(addButton)
 
-    const form = result.container.querySelector('form')
-    assert(form !== null)
-    addTransaction(form)
+    const form = result.getByRole('form')
+
+    const [descriptionInput, valueInput, dateInput] = Array.from(
+      form.querySelectorAll('input')
+    )
+    const button = form.querySelector('button') as HTMLButtonElement
+
+    fireEvent.change(valueInput, { target: { value: '400' } })
+    fireEvent.change(descriptionInput, { target: { value: 'Description' } })
+    fireEvent.change(dateInput, { target: { value: '2010-10-22' } })
+    fireEvent.click(button)
+
     const list = await result.findByRole('list')
 
     expect(form).not.toBeInTheDocument()

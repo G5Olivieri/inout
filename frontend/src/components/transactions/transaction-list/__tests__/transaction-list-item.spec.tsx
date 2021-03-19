@@ -11,10 +11,9 @@ describe('Component - TransactionListItem', () => {
     render(<TransactionListItem transaction={transaction} />)
     const item = await screen.getByRole('listitem')
     expect(item).toHaveTextContent(
-      `${transaction.description}: $${transaction.value / 100} - ${format(
-        transaction.date,
-        'yyyy-MM-dd'
-      )}`
+      `${transaction.description}: $${(transaction.value / 100).toFixed(
+        2
+      )} - ${format(transaction.date, 'yyyy-MM-dd')}`
     )
   })
 })

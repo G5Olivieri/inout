@@ -3,17 +3,6 @@ import { fireEvent, render } from '@app/tests/setup'
 import { Expenses } from '@app/pages/expenses'
 import '@testing-library/jest-dom/extend-expect'
 
-const addTransaction = (form: HTMLElement) => {
-  const [valueInput, descriptionInput, dateInput] = Array.from(
-    form.querySelectorAll('input')
-  )
-  const button = form.querySelector('button') as HTMLButtonElement
-  fireEvent.change(valueInput, { target: { value: '400' } })
-  fireEvent.change(descriptionInput, { target: { value: 'Description' } })
-  fireEvent.change(dateInput, { target: { value: '2010-10-22' } })
-  fireEvent.click(button)
-}
-
 describe('Page - Expenses', () => {
   test('should not render form', async () => {
     const result = render(<Expenses />)
@@ -44,7 +33,16 @@ describe('Page - Expenses', () => {
     fireEvent.click(addButton)
 
     const form = await result.findByRole('form')
-    addTransaction(form)
+
+    const [descriptionInput, valueInput, dateInput] = Array.from(
+      form.querySelectorAll('input')
+    )
+    const button = form.querySelector('button') as HTMLButtonElement
+
+    fireEvent.change(valueInput, { target: { value: '400' } })
+    fireEvent.change(descriptionInput, { target: { value: 'Description' } })
+    fireEvent.change(dateInput, { target: { value: '2010-10-22' } })
+    fireEvent.click(button)
 
     const list = await result.findByRole('list')
 
