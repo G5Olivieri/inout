@@ -3,32 +3,34 @@ import { format } from 'date-fns'
 import { useTranslation } from 'react-i18next'
 import _ from 'lodash'
 import { useInternacionalization } from '@app/ui/internacionalizations/use-internacionalization'
-import { DomainEvents } from '@app/domain/events/domain-events'
-import {
-  GetExpensesSummaryCommand,
-  ExpensesSummaryFetchedEvent,
-} from '@app/domain/transactions/commands/get-expenses-summary-command'
+import { GetTransactionsSummaryCommand } from '@app/domain/transactions/summary/get-transactions-summary-command'
+import { useDomainEvents } from '@app/ui/events/use-domain-events'
+import { TransactionsSummaryFetchedEvent } from '@app/domain/transactions/summary/transactions-summary-fetched-event'
 
-export const Home: React.FC = (): JSX.Element => {
+interface HomeProps {
+  command: GetTransactionsSummaryCommand
+}
+
+export const Home: React.FC<HomeProps> = ({ command }): JSX.Element => {
   const { t } = useTranslation()
   const i18n = useInternacionalization()
+  const domainEvents = useDomainEvents()
   const [month, setMonth] = useState(format(new Date(), 'yyyy-MM'))
-  const [revenue, setRevenue] = useState(0)
+  const [revenues, setRevenues] = useState(0)
+  const [expenses, setExpenses] = useState(0)
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setMonth(event.target.value)
   }
 
-  const domainEvents = new DomainEvents()
-  const command = new GetExpensesSummaryCommand(domainEvents)
-
-  domainEvents.on(ExpensesSummaryFetchedEvent, (event) =>
-    setRevenue(parseFloat(event.summary.value))
-  )
+  domainEvents.on(TransactionsSummaryFetchedEvent, ({ summary }) => {
+    setRevenues(summary.revenues.value)
+    setExpenses(summary.expenses.value)
+  })
 
   useEffect(() => {
     command.execute({ year: 1 })
-  }, [revenue])
+  }, [revenues, expenses])
 
   return (
     <div>
@@ -39,10 +41,10 @@ export const Home: React.FC = (): JSX.Element => {
         aria-label={t('month')}
       />
       <div>
-        {_.capitalize(t('revenue_plural'))}: {i18n.formatCurrency(revenue)}
+        {_.capitalize(t('revenue_plural'))}: {i18n.formatCurrency(revenues)}
       </div>
       <div>
-        {_.capitalize(t('expense_plural'))}: {i18n.formatCurrency(0)}
+        {_.capitalize(t('expense_plural'))}: {i18n.formatCurrency(expenses)}
       </div>
     </div>
   )
