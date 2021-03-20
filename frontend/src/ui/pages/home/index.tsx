@@ -15,29 +15,34 @@ export const Home: React.FC<HomeProps> = ({ command }): JSX.Element => {
   const { t } = useTranslation()
   const i18n = useInternacionalization()
   const domainEvents = useDomainEvents()
-  const [month, setMonth] = useState(format(new Date(), 'yyyy-MM'))
+  const [month, setMonth] = useState(new Date())
   const [revenues, setRevenues] = useState(0)
   const [expenses, setExpenses] = useState(0)
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setMonth(event.target.value)
+    const date = new Date(event.target.value)
+    setMonth(date)
+    command.execute({ year: date.getFullYear(), month: date.getMonth() })
   }
 
-  domainEvents.on(TransactionsSummaryFetchedEvent, ({ summary }) => {
-    setRevenues(summary.revenues.value)
-    setExpenses(summary.expenses.value)
-  })
-
   useEffect(() => {
-    command.execute({ year: 1 })
-  }, [revenues, expenses])
+    const subscription = domainEvents.on(
+      TransactionsSummaryFetchedEvent,
+      ({ summary }) => {
+        setRevenues(summary.revenues.value)
+        setExpenses(summary.expenses.value)
+      }
+    )
+    command.execute({ year: month.getFullYear(), month: month.getMonth() })
+    return () => subscription.cancel()
+  }, [])
 
   return (
     <div>
       <input
         type="month"
         onChange={onChange}
-        value={month}
+        value={format(month, 'yyyy-MM')}
         aria-label={t('month')}
       />
       <div>

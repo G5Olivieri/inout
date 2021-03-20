@@ -5,16 +5,19 @@ import { TransactionsSummaryFetchedEvent } from '@app/domain/transactions/summar
 export class GetTransactionsSummaryCommand {
   public constructor(private readonly eventPublisher: EventPublisher) {}
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public async execute(_filter: TransactionsSummaryFilter): Promise<void> {
+  public async execute(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    { year, month = 0, day = 0 }: TransactionsSummaryFilter
+  ): Promise<void> {
+    const value = (year - 2000) * month - day
     setTimeout(() => {
       this.eventPublisher.publish(
         new TransactionsSummaryFetchedEvent({
           expenses: {
-            value: 100,
+            value: value,
           },
           revenues: {
-            value: 110,
+            value: value / 2,
           },
         })
       )
