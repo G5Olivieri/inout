@@ -1,10 +1,10 @@
 import React from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
-import { NavigationMenu } from '@app/components/navigation-menu'
-import { Home } from '@app/pages/home'
-import { Expenses } from '@app/pages/expenses'
-import { Revenues } from '@app/pages/revenues'
-import { InternacionalizationProvider } from '@app/internacionalizations/internacionalization-provider'
+import { NavigationMenu } from '@app/ui/components/navigation-menu'
+import { Home } from '@app/ui/pages/home'
+import { Expenses } from '@app/ui/pages/expenses'
+import { Revenues } from '@app/ui/pages/revenues'
+import { InternacionalizationProvider } from '@app/ui/internacionalizations/internacionalization-provider'
 
 export const App: React.FC = (): JSX.Element => (
   <BrowserRouter>
