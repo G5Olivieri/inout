@@ -12,6 +12,7 @@ export const Products: React.FC = () => {
       .then((res) => res.json() as Promise<Array<Product>>)
       .then((data) => setProducts(data.map((p) => p.name)))
   })
+
   return (
     <div>
       <h1>Produtos</h1>
