@@ -1,16 +1,29 @@
 import 'module-alias/register'
-import 'reflect-metadata'
-import { createServer } from '@marblejs/core'
-import { IO } from 'fp-ts/lib/IO'
 
-import { listener } from '@app/http.listener'
+import express from 'express'
+import { CORS_ALLOWED_ORIGINS } from '@app/settings'
+import { logHttpCommunication } from '@app/server/middlewares/log-http-communication'
+import { loggerContext } from '@app/server/middlewares/logger-context'
+import bodyParser from 'body-parser'
+import cors from 'cors'
 
-const server = createServer({
-  port: 1337,
-  hostname: '0.0.0.0',
-  listener,
+const server = express()
+
+server.use(
+  cors({
+    origin: CORS_ALLOWED_ORIGINS,
+  })
+)
+server.use(bodyParser.json())
+server.use(loggerContext())
+server.use(logHttpCommunication())
+
+server.get('/', (req, res) => {
+  res.send('OK').end()
 })
 
-const main: IO<void> = async () => await (await server)()
+const port = process.env.PORT || '3000'
 
-main()
+server.listen(port, () => {
+  console.info(`Server running on port ${port}`)
+})
