@@ -1,4 +1,4 @@
-import z from 'zod'
+import * as z from 'zod'
 
 export const createProductSchema = z.object({
   name: z.string(),

@@ -16,6 +16,10 @@ export class AsyncStorage implements Storage {
     this.storage.set(key, value)
   }
 
+  public getOrSet(key: string, value: unknown): unknown {
+    return Storage.getOrSet(this, key, value)
+  }
+
   public run(fn: () => void): void {
     this.storage.run(fn)
   }

@@ -6,16 +6,15 @@
       "@app/*": ["src/*"],
       "@test/*": ["test/*"]
     },
-    "target": "es5",
-    "lib": ["es6"],
-    "types": ["reflect-metadata"],
     "outDir": "dist",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "incremental": true,
     "esModuleInterop": true,
+    "types": ["reflect-metadata"],
+    "target": "esnext",
     "module": "commonjs",
-    "moduleResolution": "node",
+    "moduleResolution": "node"
   },
   "include": [
     "src",

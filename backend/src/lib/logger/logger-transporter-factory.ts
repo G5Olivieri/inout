@@ -24,7 +24,7 @@ export class LoggerTransportersFactory {
           log.timestamp,
           `[${log.level}]`,
           log.message,
-          JSON.stringify(log, null, 4),
+          JSON.stringify(log),
         ].join(' ')
       )
     )

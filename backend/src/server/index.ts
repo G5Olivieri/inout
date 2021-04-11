@@ -5,8 +5,9 @@ import bodyParser from 'body-parser'
 import cors from 'cors'
 import { diContainer } from '@app/di-container'
 import { InversifyExpressServer } from 'inversify-express-utils'
+import { requestContextStorage } from '@app/server/middlewares/request-context-storage'
 
-const server = new InversifyExpressServer(diContainer)
+const app = new InversifyExpressServer(diContainer)
   .setConfig((app) => {
     app.use(
       cors({
@@ -16,11 +17,11 @@ const server = new InversifyExpressServer(diContainer)
     app.use(bodyParser.json())
     app.use(loggerContext())
     app.use(logHttpCommunication())
-
+    app.use(requestContextStorage())
     app.get('/', (req, res) => {
       res.send({ status: 'OK' }).end()
     })
   })
   .build()
 
-export { server }
+export { app }
