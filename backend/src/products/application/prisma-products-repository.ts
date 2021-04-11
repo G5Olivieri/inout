@@ -1,4 +1,6 @@
 import { PrismaClient } from '.prisma/client'
+import { GetAllProductsFilter } from '@app/products/domain/get-all-products-filter'
+import { Pagination } from '@app/products/domain/pagination'
 import { Product } from '@app/products/domain/product'
 import { ProductsRepository } from '@app/products/domain/products-repository'
 import { inject, injectable } from 'inversify'
@@ -16,5 +18,21 @@ export class PrismaProductsRepository implements ProductsRepository {
       },
     })
     return new Product(result.name, result.id)
+  }
+
+  public async getAll({
+    page = 1,
+    itemsPerPage = 10,
+  }: GetAllProductsFilter): Promise<Pagination<Product>> {
+    const results = await this.prisma.product.findMany({
+      skip: (page - 1) * itemsPerPage,
+      take: itemsPerPage,
+    })
+
+    return new Pagination(
+      page,
+      results.length,
+      results.map((result) => new Product(result.name, result.id))
+    )
   }
 }

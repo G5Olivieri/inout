@@ -5,3 +5,6 @@ CREATE TABLE "products" (
     "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "products.name_unique" ON "products"("name");

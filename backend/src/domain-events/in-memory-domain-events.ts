@@ -1,7 +1,6 @@
 // eslint-disable-next-line max-len
 /* eslint-disable @typescript-eslint/ban-types, @typescript-eslint/no-explicit-any */
-import { fromNullable, getOrElse, map, Option } from 'fp-ts/Option'
-import { Semigroup } from 'fp-ts/Semigroup'
+import { fromNullable, getOrElse } from 'fp-ts/Option'
 import { pipe } from 'fp-ts/function'
 import { Logger } from '@app/lib/logger/logger'
 import { EventSubscriber } from '@app/domain-events/event-subscriber'
