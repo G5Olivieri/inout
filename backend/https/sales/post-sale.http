@@ -1,0 +1,19 @@
+# REQUEST
+POST /api/v1/sales
+
+# BODY
+{
+  "billables": [
+    {
+      "id": "bf947a5f-29e0-47d4-8633-f9c365ced1fb",
+      "quantity": 1
+    },
+    {
+      "id": "68faa9a9-bfbb-4c31-8240-b657a27d9dde",
+      "amount": "10.00", // billable override
+      "quantity": 1
+    }
+  ],
+  "amount": "15.00", // sale override
+  "timestamp": "2020-12-02T00:00:00.000Z"
+}

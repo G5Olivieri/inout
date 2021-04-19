@@ -15,6 +15,8 @@ import { ProductCreated } from '@app/products/domain/product-created'
 
 @controller('/api/v1/products')
 export class CreateProductController extends BaseHttpController {
+  private response: interfaces.IHttpActionResult = this.ok()
+
   public constructor(
     @inject(CreateProductCommand)
     private readonly command: CreateProductCommand,
@@ -33,13 +35,11 @@ export class CreateProductController extends BaseHttpController {
       return this.badRequest(validationResult.error.name)
     }
 
-    let response: interfaces.IHttpActionResult = this.ok()
-
     this.eventSubscriber.once(ProductCreated, (event) => {
-      response = this.created(`/api/v1/products/${event.id}`, event)
+      this.response = this.created(`/api/v1/products/${event.id}`, event)
     })
 
     await this.command.execute(new Product(validationResult.data.name))
-    return response
+    return this.response
   }
 }
