@@ -4,6 +4,7 @@ import { ProductsRepository } from '@app/products/domain/products-repository'
 import { Command } from '@app/common/command'
 import { EventPublisher } from '@app/domain-events/event-publisher'
 import { ProductCreated } from '@app/products/domain/product-created'
+import { ProductNameConflicted } from '@app/products/domain/product-name-conflicted'
 
 @injectable()
 export class CreateProductCommand implements Command {
@@ -15,9 +16,11 @@ export class CreateProductCommand implements Command {
   ) {}
 
   public async execute(product: Product): Promise<void> {
-    const savedProduct = await this.productsRepository.save(product)
-    await this.publisher.publish(
-      new ProductCreated(savedProduct.id, savedProduct.name)
-    )
+    await this.productsRepository.save(product, {
+      onConflicted: (product) =>
+        this.publisher.publish(ProductCreated.fromProduct(product)),
+      onSuccess: (product) =>
+        this.publisher.publish(ProductNameConflicted.fromProduct(product)),
+    })
   }
 }

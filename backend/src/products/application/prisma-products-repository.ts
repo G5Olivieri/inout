@@ -2,7 +2,11 @@ import { PrismaClient } from '.prisma/client'
 import { GetAllProductsFilter } from '@app/products/domain/get-all-products-filter'
 import { Pagination } from '@app/products/domain/pagination'
 import { Product } from '@app/products/domain/product'
-import { ProductsRepository } from '@app/products/domain/products-repository'
+import {
+  ProductsRepository,
+  SaveListener,
+} from '@app/products/domain/products-repository'
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime'
 import { inject, injectable } from 'inversify'
 
 @injectable()
@@ -11,13 +15,26 @@ export class PrismaProductsRepository implements ProductsRepository {
     @inject(PrismaClient) private readonly prisma: PrismaClient
   ) {}
 
-  public async save(product: Product): Promise<Product> {
-    const result = await this.prisma.product.create({
-      data: {
-        name: product.name,
-      },
-    })
-    return new Product(result.name, result.id)
+  public async save(product: Product, listener: SaveListener): Promise<void> {
+    try {
+      await this.prisma.product.create({
+        data: {
+          id: product.id,
+          name: product.name,
+          tags: Array.from(product.tags).join(';'),
+        },
+      })
+
+      return listener.onSuccess(product)
+    } catch (error) {
+      if (!(error instanceof PrismaClientKnownRequestError)) {
+        throw error
+      }
+      // see https://www.prisma.io/docs/reference/api-reference/error-reference
+      if (error.code === 'P2002') {
+        return listener.onConflicted(product)
+      }
+    }
   }
 
   public async getAll({
@@ -32,7 +49,10 @@ export class PrismaProductsRepository implements ProductsRepository {
     return new Pagination(
       page,
       results.length,
-      results.map((result) => new Product(result.name, result.id))
+      results.map(
+        (result) =>
+          new Product(result.id, result.name, new Set(result.tags.split(';')))
+      )
     )
   }
 }

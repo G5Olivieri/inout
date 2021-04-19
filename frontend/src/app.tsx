@@ -1,31 +1,18 @@
-import React from 'react'
-import { Container } from 'react-bootstrap'
+import React, { Suspense, lazy } from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
-import { Home } from '@app/home'
-import { Header } from '@app/header'
-import { Footer } from '@app/footer'
-import { Products } from '@app/products'
-import { Estoque } from '@app/estoque'
+const AddProduct = lazy(() => import('@app/products/add-products'))
 
 export const App: React.FC = (): JSX.Element => (
   <BrowserRouter>
-    <Header />
-    <Container>
+    <Suspense fallback={<div>Loading...</div>}>
       <Switch>
         <Route exact path="/">
-          <Home />
-        </Route>
-        <Route path="/products">
-          <Products />
-        </Route>
-        <Route path="/estoque">
-          <Estoque />
+          <AddProduct />
         </Route>
         <Route path="*">
           <h1>Pagina nao encontrada!</h1>
         </Route>
       </Switch>
-    </Container>
-    <Footer />
+    </Suspense>
   </BrowserRouter>
 )

@@ -1,6 +1,7 @@
 export class Product {
   public constructor(
+    public readonly id: string,
     public readonly name: string,
-    public readonly id: number = 0
+    public readonly tags: Set<string>
   ) {}
 }

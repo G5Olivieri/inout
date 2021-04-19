@@ -5,7 +5,7 @@ import { ProductsRepository } from '@app/products/domain/products-repository'
 import { inject, injectable } from 'inversify'
 
 @injectable()
-export class GetAllProductsQuery {
+export class GetAllProductsCommand {
   public constructor(
     @inject(ProductsRepository)
     private readonly productsRepository: ProductsRepository

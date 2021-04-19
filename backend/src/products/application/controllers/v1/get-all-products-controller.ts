@@ -6,13 +6,13 @@ import {
   httpGet,
   queryParam,
 } from 'inversify-express-utils'
-import { GetAllProductsQuery } from '@app/products/domain/get-all-products-query'
+import { GetAllProductsCommand } from '@app/products/domain/get-all-products-command'
 
 @controller('/api/v1/products')
 export class GetAllProductsController extends BaseHttpController {
   public constructor(
-    @inject(GetAllProductsQuery)
-    private readonly query: GetAllProductsQuery
+    @inject(GetAllProductsCommand)
+    private readonly query: GetAllProductsCommand
   ) {
     super()
   }

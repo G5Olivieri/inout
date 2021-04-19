@@ -11,8 +11,9 @@ generator client {
 }
 
 model Product {
-  id Int @default(autoincrement()) @id
+  id String @default(uuid()) @id
   name String @unique
+  tags String
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt
   @@map("products")
