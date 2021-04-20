@@ -1,5 +1,5 @@
-import { GetAllProductsFilter } from '@app/products/domain/get-all-products-filter'
-import { Pagination } from '@app/products/domain/pagination'
+import { GetAllProductsFilter } from '@app/products/domain/get-all-products.filter'
+import { Pagination } from '@app/common/pagination'
 import { Product } from '@app/products/domain/product'
 import { injectable } from 'inversify'
 

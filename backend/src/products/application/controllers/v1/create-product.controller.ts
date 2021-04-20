@@ -7,17 +7,17 @@ import {
   request,
   interfaces,
 } from 'inversify-express-utils'
-import { CreateProductCommand } from '@app/products/domain/create-product-command'
+import { CreateProductCommand } from '@app/products/domain/create-product.command'
 import { Product } from '@app/products/domain/product'
 import {
   CreateProductRequest,
   createProductSchema,
-} from '@app/products/application/controllers/v1/create-product-request'
+} from '@app/products/application/controllers/v1/create-product.request'
 import { EventSubscriber } from '@app/domain-events/event-subscriber'
 import { ProductCreated } from '@app/products/domain/product-created'
-import { CreateProductMapper } from '@app/products/application/controllers/v1/create-product-mapper'
-import { Mapper } from '@app/common/mapper'
 import { ProductNameConflicted } from '@app/products/domain/product-name-conflicted'
+import { UUID } from '@app/lib/uuid/uuid'
+import { CreateProductResponse } from '@app/products/application/controllers/create-product.response'
 
 @controller('/api/v1/products')
 export class CreateProductController extends BaseHttpController {
@@ -27,9 +27,7 @@ export class CreateProductController extends BaseHttpController {
     @inject(CreateProductCommand)
     private readonly command: CreateProductCommand,
     @inject(EventSubscriber)
-    private readonly eventSubscriber: EventSubscriber,
-    @inject(CreateProductMapper)
-    private readonly mapper: Mapper<CreateProductRequest, Product>
+    private readonly eventSubscriber: EventSubscriber
   ) {
     super()
   }
@@ -44,15 +42,29 @@ export class CreateProductController extends BaseHttpController {
     }
 
     this.eventSubscriber.once(ProductCreated, (event) => {
-      this.response = this.created(`/api/v1/products/${event.id}`, event)
+      this.response = this.created(
+        `/api/v1/products/${event.id.toString()}`,
+        CreateProductResponse.fromProductCreated(event)
+      )
     })
 
     this.eventSubscriber.once(ProductNameConflicted, () => {
       this.response = this.conflict()
     })
 
-    await this.command.execute(this.mapper.map(result.data))
+    await this.command.execute(this.mapRequestToDomain(result.data))
 
     return this.response
+  }
+
+  private mapRequestToDomain(request: CreateProductRequest) {
+    return new Product(
+      UUID.randomUUID(),
+      request.name,
+      request.tags.reduce(
+        (acc, value) => acc.add(value.toLowerCase()),
+        new Set<string>()
+      )
+    )
   }
 }

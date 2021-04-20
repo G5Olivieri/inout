@@ -17,8 +17,7 @@ const AddProduct: React.FC = () => {
           .reduce((acc, value) => acc.add(value), new Set())
       ),
     }
-    console.log(request)
-    fetch('http://localhost:3001/api/v1/products', {
+    fetch('http://172.23.112.9:3001/api/v1/products', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -1,11 +1,12 @@
-import { GetAllProductsFilter } from '@app/products/domain/get-all-products-filter'
-import { Pagination } from '@app/products/domain/pagination'
+import { Query } from '@app/common/query'
+import { GetAllProductsFilter } from '@app/products/domain/get-all-products.filter'
+import { Pagination } from '@app/common/pagination'
 import { Product } from '@app/products/domain/product'
-import { ProductsRepository } from '@app/products/domain/products-repository'
+import { ProductsRepository } from '@app/products/domain/products.repository'
 import { inject, injectable } from 'inversify'
 
 @injectable()
-export class GetAllProductsCommand {
+export class GetAllProductsQuery implements Query<Pagination<Product>> {
   public constructor(
     @inject(ProductsRepository)
     private readonly productsRepository: ProductsRepository

@@ -1,11 +1,12 @@
 import { PrismaClient } from '.prisma/client'
-import { GetAllProductsFilter } from '@app/products/domain/get-all-products-filter'
-import { Pagination } from '@app/products/domain/pagination'
+import { UUID } from '@app/lib/uuid/uuid'
+import { GetAllProductsFilter } from '@app/products/domain/get-all-products.filter'
+import { Pagination } from '@app/common/pagination'
 import { Product } from '@app/products/domain/product'
 import {
   ProductsRepository,
   SaveListener,
-} from '@app/products/domain/products-repository'
+} from '@app/products/domain/products.repository'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime'
 import { inject, injectable } from 'inversify'
 
@@ -19,7 +20,7 @@ export class PrismaProductsRepository implements ProductsRepository {
     try {
       await this.prisma.product.create({
         data: {
-          id: product.id,
+          id: product.id.toString(),
           name: product.name,
           tags: Array.from(product.tags).join(';'),
         },
@@ -34,6 +35,7 @@ export class PrismaProductsRepository implements ProductsRepository {
       if (error.code === 'P2002') {
         return listener.onConflicted(product)
       }
+      throw error
     }
   }
 
@@ -48,10 +50,13 @@ export class PrismaProductsRepository implements ProductsRepository {
 
     return new Pagination(
       page,
-      results.length,
       results.map(
         (result) =>
-          new Product(result.id, result.name, new Set(result.tags.split(';')))
+          new Product(
+            UUID.fromString(result.id),
+            result.name,
+            new Set(result.tags.split(';'))
+          )
       )
     )
   }

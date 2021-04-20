@@ -6,13 +6,14 @@ import {
   httpGet,
   queryParam,
 } from 'inversify-express-utils'
-import { GetAllProductsCommand } from '@app/products/domain/get-all-products-command'
+import { GetAllProductsQuery } from '@app/products/domain/get-all-products.query'
+import { GetAllProductsItemResponse as GetAllProductsResponse } from '@app/products/application/controllers/v1/get-all-products.response'
 
 @controller('/api/v1/products')
 export class GetAllProductsController extends BaseHttpController {
   public constructor(
-    @inject(GetAllProductsCommand)
-    private readonly query: GetAllProductsCommand
+    @inject(GetAllProductsQuery)
+    private readonly query: GetAllProductsQuery
   ) {
     super()
   }
@@ -26,6 +27,7 @@ export class GetAllProductsController extends BaseHttpController {
       page,
       itemsPerPage,
     })
-    return this.json(result)
+
+    return this.json(GetAllProductsResponse.fromPaginatedProducts(result))
   }
 }

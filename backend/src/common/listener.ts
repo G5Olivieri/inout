@@ -1,3 +1,3 @@
-export interface Listener {
-  start(): void
+export abstract class Listener {
+  public abstract start(): void
 }
