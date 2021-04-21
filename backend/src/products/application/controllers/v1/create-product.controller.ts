@@ -7,7 +7,7 @@ import {
   request,
   interfaces,
 } from 'inversify-express-utils'
-import { CreateProductCommand } from '@app/products/domain/create-product.command'
+import { CreateProductCommand } from '@app/products/application/create-product.command'
 import { Product } from '@app/products/domain/product'
 import {
   CreateProductRequest,
@@ -17,7 +17,7 @@ import { EventSubscriber } from '@app/domain-events/event-subscriber'
 import { ProductCreated } from '@app/products/domain/product-created'
 import { ProductNameConflicted } from '@app/products/domain/product-name-conflicted'
 import { UUID } from '@app/lib/uuid/uuid'
-import { CreateProductResponse } from '@app/products/application/controllers/create-product.response'
+import { CreateProductResponse } from '@app/products/application/controllers/v1/create-product.response'
 
 @controller('/api/v1/products')
 export class CreateProductController extends BaseHttpController {

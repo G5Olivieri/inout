@@ -6,7 +6,7 @@ import {
   httpGet,
   queryParam,
 } from 'inversify-express-utils'
-import { GetAllProductsQuery } from '@app/products/domain/get-all-products.query'
+import { GetAllProductsQuery } from '@app/products/application/get-all-products.query'
 import { GetAllProductsItemResponse as GetAllProductsResponse } from '@app/products/application/controllers/v1/get-all-products.response'
 
 @controller('/api/v1/products')

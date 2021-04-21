@@ -4,7 +4,7 @@ const ListProducts: React.FC = () => {
   const [products, setProducts] = useState<Array<{ name: string }>>([])
 
   useEffect(() => {
-    fetch('http://172.23.112.9:3001/api/v1/products')
+    fetch('http://localhost:3001/api/v1/products')
       .then((r) => r.json())
       .then((data) => {
         setProducts(data.items)

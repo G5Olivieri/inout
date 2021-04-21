@@ -1,0 +1,196 @@
+openapi: 3.0.3
+info:
+  title: Inout API v1
+  license:
+    name: MIT
+    url: 'https://mit-license.org/'
+  version: 0.0.1
+servers:
+  - url: 'http://localhost:3001/api/v1'
+    description: Local development server
+tags:
+  - name: product
+  - name: sales
+  - name: billable
+
+paths:
+  /products:
+    post:
+      tags:
+        - product
+      summary: Create a new product
+      operationId: createProduct
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - tags
+              properties:
+                name:
+                  type: string
+                  example: Zomo de Morango
+                tags:
+                  type: array
+                  items:
+                    type: string
+                  example:
+                    - zomo
+                    - essencia
+        required: true
+      responses:
+        '201':
+          description: Product created with success
+          headers:
+            Location:
+              description: path to get created product
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  name:
+                    type: string
+                  tags:
+                    type: array
+                    items:
+                      type: string
+          links:
+            GetProductById:
+              operationId: getProduct
+              parameters:
+                productId: '$response.body#/id'
+              description: >
+                The `id` value returned in the response can be used as
+                the `productId` parameter in `GET /products/{productId}`.
+
+        '409':
+          description: Product name already exists
+          content: {}
+    get:
+      tags:
+      - product
+      summary: List products
+      operationId: listProducts
+      parameters:
+      - in: query
+        name: limit
+        description: limit of the items
+        schema:
+          type: integer
+      - in: query
+        name: offset
+        description: skip items
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: List product with success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+  /products/{productId}:
+    get:
+      summary: Get product
+      tags:
+      - product
+      operationId: getProduct
+      parameters:
+      - in: path
+        name: productId
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Get product with success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+  /sales/billables:
+    post:
+      summary: Create a new billable
+      tags:
+      - billable
+      - sales
+      operationId: createBillable
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '201':
+          description: billable created with success
+          content: {}
+          links:
+            GetBillableById:
+              operationId: getBillable
+              parameters:
+                billableId: '$response.body#/id'
+              description: >
+                The `id` value returned in the response can be used as
+                the `billableId` parameter in `GET /sales/billables/{billableId}`.
+        '404':
+          description: product does not exists
+          content: {}
+  /sales/billables/{billableId}:
+    get:
+      summary: Get billable
+      tags:
+      - billable
+      - sales
+      operationId: getBillable
+      parameters:
+      - in: path
+        name: billableId
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Get billable with success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Billable'
+
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          example: Zomo de Morango
+        tags:
+          description: unique values in lower case
+          type: array
+          items:
+            type: string
+          example:
+            - zomo
+            - essencia
+    Billable:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Zomo de Morango
+
