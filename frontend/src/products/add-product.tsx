@@ -1,8 +1,9 @@
+import TagsInput from '@app/products/components/tags-input'
 import React, { useState } from 'react'
 
 const AddProduct: React.FC = () => {
   const [name, setName] = useState('')
-  const [tags, setTags] = useState('')
+  const [tags, setTags] = useState<Array<string>>([])
   const [AddInCatalog, setAddInCatalog] = useState(false)
   const [price, setPrice] = useState(0)
 
@@ -10,14 +11,9 @@ const AddProduct: React.FC = () => {
     event.preventDefault()
     const request = {
       name,
-      tags: Array.from(
-        tags
-          .split(',')
-          .map((tag) => tag.trim().toLowerCase())
-          .reduce((acc, value) => acc.add(value), new Set())
-      ),
+      tags,
     }
-    fetch('http://localhost:3001/api/v1/products', {
+    console.log('http://localhost:3001/api/v1/products', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -30,8 +26,8 @@ const AddProduct: React.FC = () => {
     setName(event.target.value)
   }
 
-  const onTagsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTags(event.target.value)
+  const onTagsChange = (tags: Array<string>) => {
+    setTags(tags)
   }
 
   const onAddPriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,16 +47,10 @@ const AddProduct: React.FC = () => {
         name="name"
         onChange={onNameChange}
         value={name}
+        autoFocus
       />
       <label htmlFor="tags">Etiquetas (separado por virgula)</label>
-      <input
-        type="text"
-        id="tags"
-        name="tags"
-        placeholder="zomo,essencia,morango"
-        onChange={onTagsChange}
-        value={tags}
-      />
+      <TagsInput onChange={onTagsChange} />
       <label htmlFor="addPrice">Adicionar ao catalogo</label>
       <input
         type="checkbox"
