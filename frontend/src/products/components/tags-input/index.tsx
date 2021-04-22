@@ -1,6 +1,6 @@
+import React from 'react'
 import { Container, Input } from '@app/products/components/tags-input/styles'
 import Tags from '@app/products/components/tags-input/tags'
-import React from 'react'
 
 interface TagsInputProps {
   onChange: (tags: Array<string>) => void

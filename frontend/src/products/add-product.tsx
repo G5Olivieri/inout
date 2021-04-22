@@ -1,5 +1,6 @@
-import TagsInput from '@app/products/components/tags-input'
 import React, { useState } from 'react'
+import TagsInput from '@app/products/components/tags-input'
+import { API_BASE_URL_V1 } from '@app/settings'
 
 const AddProduct: React.FC = () => {
   const [name, setName] = useState('')
@@ -13,7 +14,7 @@ const AddProduct: React.FC = () => {
       name,
       tags,
     }
-    console.log('http://localhost:3001/api/v1/products', {
+    fetch(`${API_BASE_URL_V1}/products`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
+import { API_BASE_URL_V1 } from '@app/settings'
 
 const ListProducts: React.FC = () => {
   const [products, setProducts] = useState<Array<{ name: string }>>([])
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/v1/products')
+    fetch(`${API_BASE_URL_V1}/products`)
       .then((r) => r.json())
       .then((data) => {
         setProducts(data.items)
