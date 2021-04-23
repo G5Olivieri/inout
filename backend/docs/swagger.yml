@@ -10,6 +10,7 @@ servers:
     description: Local development server
 tags:
   - name: product
+  - name: catalog
   - name: sales
 
 paths:
@@ -122,11 +123,11 @@ paths:
                 $ref: '#/components/schemas/Product'
         '404':
           description: Product not found
-  /sales/billables:
+  /catalog:
     post:
       summary: Create a new billable
       tags:
-      - sales
+      - catalog
       operationId: createBillable
       requestBody:
         required: true
@@ -166,13 +167,13 @@ paths:
                 billableId: '$response.body#/id'
               description: >
                 The `id` value returned in the response can be used as
-                the `billableId` parameter in `GET /sales/billables/{billableId}`.
+                the `billableId` parameter in `GET /catalog/{billableId}`.
         '404':
           description: product does not exists
 
     get:
       tags:
-      - sales
+      - catalog
       summary: List billables
       operationId: listBillables
       parameters:
@@ -198,11 +199,11 @@ paths:
                 items:
                   $ref: '#/components/schemas/Billable'
 
-  /sales/billables/{billableId}:
+  /catalog/{billableId}:
     get:
       summary: Get billable
       tags:
-      - sales
+      - catalog
       operationId: getBillable
       parameters:
       - in: path
@@ -232,36 +233,31 @@ paths:
           application/json:
             schema:
               required:
-              - billables
+              - products
               - timestamp
               type: object
               properties:
-                billables:
+                products:
                   type: array
                   items:
                     required:
                     - id
                     - quantity
+                    - amount
                     type: object
                     properties:
                       id:
                         type: string
                         format: uuid
                       quantity:
-                        description: must be greater than 0
                         type: integer
                         example: 1
                       amount:
-                        description: override billable amount
                         type: string
                         example: 33.33
                 timestamp:
                   type: string
                   format: date-time
-                amount:
-                  description: override total amount of the billables
-                  type: string
-                  example: 33.33
 
       responses:
         '201':
@@ -281,6 +277,35 @@ paths:
                 the `saleId` parameter in `GET /sales/{saleId}`.
         '404':
           description: billable does not exists
+
+    get:
+      tags:
+      - sales
+      summary: List sales
+      operationId: listSales
+      parameters:
+      - in: query
+        name: limit
+        description: limit of the items
+        schema:
+          type: integer
+          default: 0
+      - in: query
+        name: offset
+        description: skip items
+        schema:
+          type: integer
+          default: 100
+      responses:
+        '200':
+          description: List sales with success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Sale'
+
   /sales/{saleId}:
     get:
       summary: Get sale
@@ -346,14 +371,20 @@ components:
         id:
           type: string
           format: uuid
-        amount:
-          type: string
-          example: 33.33
         timestamp:
           type: string
           format: date-time
-        billables:
+        products:
           type: array
           items:
-            type: string
-            format: uuid
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              quantity:
+                type: integer
+                example: 1
+              amount:
+                type: string
+                example: "33.33"

@@ -15,6 +15,7 @@ model Product {
   name String @unique
   tags String
   billables Billable[]
+  saleProduct SaleProduct[]
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt
   @@map("products")
@@ -29,4 +30,31 @@ model Billable {
   updatedAt DateTime @updatedAt
 
   @@map("billables")
+}
+
+model SaleProduct {
+  id String @default(uuid()) @id
+
+  product Product @relation(fields: [productId], references: [id])
+  productId String
+  sale Sale @relation(fields: [saleId], references: [id])
+  saleId String
+
+  quantity Int
+  amount String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt
+
+  @@map("sale_products")
+}
+
+model Sale {
+  id String @default(uuid()) @id
+  timestamp  DateTime
+  products SaleProduct[]
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt
+
+  @@map("sales")
 }

@@ -1,19 +1,19 @@
 import { ContainerModule } from 'inversify'
 
-import { CreateBillableCommand } from '@app/sales/billables/application/create-billable.command'
-import { GetAllBillablesQuery } from '@app/sales/billables/application/get-all-billables.query'
-import { GetBillableByIdQuery } from '@app/sales/billables/application/get-billable-by-id.query'
-import { PrismaBillablesRepository } from '@app/sales/billables/infrastructure/prisma-billables.repository'
-import { BillablesRepository } from '@app/sales/billables/domain/billables.repository'
+import { CreateSaleCommand } from '@app/sales/application/create-sale.command'
+import { GetAllSalesQuery } from '@app/sales/application/get-all-sales.query'
+import { GetSaleByIdQuery } from '@app/sales/application/get-sale-by-id.query'
+import { SalesRepository } from '@app/sales/domain/sales.repository'
+import { PrismaSalesRepository } from '@app/sales/infrastructure/prisma-sales.repository'
 
 // declare @controller's metadata
-import '@app/sales/billables/application/controllers/v1/create-billable.controller'
-import '@app/sales/billables/application/controllers/v1/get-all-billables.controller'
-import '@app/sales/billables/application/controllers/v1/get-billable-by-id.controller'
+import '@app/sales/application/controllers/v1/create-sale.controller'
+import '@app/sales/application/controllers/v1/get-all-sales.controller'
+import '@app/sales/application/controllers/v1/get-sale-by-id.controller'
 
 export const salesModule = new ContainerModule((bind) => {
-  bind<CreateBillableCommand>(CreateBillableCommand).toSelf()
-  bind<GetAllBillablesQuery>(GetAllBillablesQuery).toSelf()
-  bind<GetBillableByIdQuery>(GetBillableByIdQuery).toSelf()
-  bind<BillablesRepository>(BillablesRepository).to(PrismaBillablesRepository)
+  bind<CreateSaleCommand>(CreateSaleCommand).toSelf()
+  bind<GetAllSalesQuery>(GetAllSalesQuery).toSelf()
+  bind<GetSaleByIdQuery>(GetSaleByIdQuery).toSelf()
+  bind<SalesRepository>(SalesRepository).to(PrismaSalesRepository)
 })
