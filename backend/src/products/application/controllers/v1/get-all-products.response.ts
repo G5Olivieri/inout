@@ -1,4 +1,3 @@
-import { Pagination } from '@app/common/pagination'
 import { Product } from '@app/products/domain/product'
 
 export class GetAllProductsItemResponse {
@@ -16,9 +15,9 @@ export class GetAllProductsItemResponse {
     )
   }
 
-  public static fromPaginatedProducts(
-    pagination: Pagination<Product>
-  ): Pagination<GetAllProductsItemResponse> {
+  public static fromProducts(
+    pagination: Product[]
+  ): GetAllProductsItemResponse[] {
     return pagination.map((product) =>
       GetAllProductsItemResponse.fromProduct(product)
     )

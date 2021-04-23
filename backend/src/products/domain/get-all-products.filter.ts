@@ -1,4 +1,4 @@
 export interface GetAllProductsFilter {
-  page?: number
-  itemsPerPage?: number
+  limit?: number
+  offset?: number
 }

@@ -8,9 +8,12 @@ import { GetAllProductsQuery } from '@app/products/application/get-all-products.
 // declare @controller's metadata
 import '@app/products/application/controllers/v1/create-product.controller'
 import '@app/products/application/controllers/v1/get-all-products.controller'
+import '@app/products/application/controllers/v1/get-product-by-id.controller'
+import { GetProductByIdQuery } from '@app/products/application/get-product-by-id.query'
 
 export const productsModule = new ContainerModule((bind) => {
+  bind<ProductsRepository>(ProductsRepository).to(PrismaProductsRepository)
   bind<CreateProductCommand>(CreateProductCommand).toSelf()
   bind<GetAllProductsQuery>(GetAllProductsQuery).toSelf()
-  bind<ProductsRepository>(ProductsRepository).to(PrismaProductsRepository)
+  bind<GetProductByIdQuery>(GetProductByIdQuery).toSelf()
 })

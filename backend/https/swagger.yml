@@ -11,7 +11,6 @@ servers:
 tags:
   - name: product
   - name: sales
-  - name: billable
 
 paths:
   /products:
@@ -21,6 +20,7 @@ paths:
       summary: Create a new product
       operationId: createProduct
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -39,7 +39,6 @@ paths:
                   example:
                     - zomo
                     - essencia
-        required: true
       responses:
         '201':
           description: Product created with success
@@ -119,22 +118,45 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Product'
+        '404':
+          description: Product not found
   /sales/billables:
     post:
       summary: Create a new billable
       tags:
-      - billable
       - sales
       operationId: createBillable
       requestBody:
+        required: true
         content:
           application/json:
             schema:
+              required:
+              - name
+              - products
+              - amount
               type: object
+              properties:
+                name:
+                  type: string
+                  example: Zomo de morango
+                products:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+                amount:
+                  type: string
+                  example: 33.33
+
       responses:
         '201':
           description: billable created with success
-          content: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Billable'
+
           links:
             GetBillableById:
               operationId: getBillable
@@ -145,12 +167,10 @@ paths:
                 the `billableId` parameter in `GET /sales/billables/{billableId}`.
         '404':
           description: product does not exists
-          content: {}
   /sales/billables/{billableId}:
     get:
       summary: Get billable
       tags:
-      - billable
       - sales
       operationId: getBillable
       parameters:
@@ -167,6 +187,91 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Billable'
+        '404':
+          description: Billable not found
+  /sales:
+    post:
+      summary: Create a new sale
+      tags:
+      - sales
+      operationId: createSale
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+              - billables
+              - timestamp
+              type: object
+              properties:
+                billables:
+                  type: array
+                  items:
+                    required:
+                    - id
+                    - quantity
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      quantity:
+                        description: must be greater than 0
+                        type: integer
+                        example: 1
+                      amount:
+                        description: override billable amount
+                        type: string
+                        example: 33.33
+                timestamp:
+                  type: string
+                  format: date-time
+                amount:
+                  description: override total amount of the billables
+                  type: string
+                  example: 33.33
+
+      responses:
+        '201':
+          description: billable created with success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sale'
+
+          links:
+            GetSaleById:
+              operationId: getSale
+              parameters:
+                saleId: '$response.body#/id'
+              description: >
+                The `id` value returned in the response can be used as
+                the `saleId` parameter in `GET /sales/{saleId}`.
+        '404':
+          description: billable does not exists
+  /sales/{saleId}:
+    get:
+      summary: Get sale
+      tags:
+      - sales
+      operationId: getSale
+      parameters:
+      - in: path
+        name: saleId
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Get sale with success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sale'
+        '404':
+          description: Sale not found
 
 components:
   schemas:
@@ -190,7 +295,34 @@ components:
     Billable:
       type: object
       properties:
+        id:
+          type: string
+          format: uuid
         name:
           type: string
           example: Zomo de Morango
-
+        products:
+          type: array
+          items:
+            type: string
+            format: uuid
+        amount:
+          type: string
+          example: 33.33
+    Sale:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        amount:
+          type: string
+          example: 33.33
+        timestamp:
+          type: string
+          format: date-time
+        billables:
+          type: array
+          items:
+            type: string
+            format: uuid

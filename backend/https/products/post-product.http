@@ -1,7 +1,0 @@
-POST /api/v1/products
-
-# BODY
-{
-  "name": "Zomo de Morango",
-  "tags": ["zomo", "essencia", "morango"]
-}

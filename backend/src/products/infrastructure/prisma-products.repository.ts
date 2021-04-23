@@ -1,7 +1,7 @@
 import { PrismaClient } from '.prisma/client'
+import { Optional } from '@app/lib/optional/optional'
 import { UUID } from '@app/lib/uuid/uuid'
 import { GetAllProductsFilter } from '@app/products/domain/get-all-products.filter'
-import { Pagination } from '@app/common/pagination'
 import { Product } from '@app/products/domain/product'
 import {
   ProductsRepository,
@@ -40,24 +40,37 @@ export class PrismaProductsRepository implements ProductsRepository {
   }
 
   public async getAll({
-    page = 1,
-    itemsPerPage = 10,
-  }: GetAllProductsFilter): Promise<Pagination<Product>> {
+    limit = 100,
+    offset = 0,
+  }: GetAllProductsFilter): Promise<Product[]> {
     const results = await this.prisma.product.findMany({
-      skip: (page - 1) * itemsPerPage,
-      take: itemsPerPage,
+      skip: offset,
+      take: limit,
     })
 
-    return new Pagination(
-      page,
-      results.map(
-        (result) =>
-          new Product(
-            UUID.fromString(result.id),
-            result.name,
-            new Set(result.tags.split(';'))
-          )
-      )
+    return results.map(
+      (result) =>
+        new Product(
+          UUID.fromString(result.id),
+          result.name,
+          new Set(result.tags.split(';'))
+        )
+    )
+  }
+
+  public async findById(id: UUID): Promise<Optional<Product>> {
+    const result = await this.prisma.product.findFirst({
+      where: {
+        id: id.toString(),
+      },
+    })
+    return Optional.ofNullable(result).map(
+      (product) =>
+        new Product(
+          UUID.fromString(product.id),
+          product.name,
+          new Set(product.tags.split(';'))
+        )
     )
   }
 }
