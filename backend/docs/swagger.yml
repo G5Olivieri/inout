@@ -1,0 +1,390 @@
+openapi: 3.0.3
+info:
+  title: Inout API v1
+  license:
+    name: MIT
+    url: 'https://mit-license.org/'
+  version: 0.0.1
+servers:
+  - url: 'http://localhost:3001/api/v1'
+    description: Local development server
+tags:
+  - name: product
+  - name: catalog
+  - name: sales
+
+paths:
+  /products:
+    post:
+      tags:
+        - product
+      summary: Create a new product
+      operationId: createProduct
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - tags
+              properties:
+                name:
+                  type: string
+                  example: Zomo de Morango
+                tags:
+                  type: array
+                  items:
+                    type: string
+                  example:
+                    - zomo
+                    - essencia
+      responses:
+        '201':
+          description: Product created with success
+          headers:
+            Location:
+              description: path to get created product
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  name:
+                    type: string
+                  tags:
+                    type: array
+                    items:
+                      type: string
+          links:
+            GetProductById:
+              operationId: getProduct
+              parameters:
+                productId: '$response.body#/id'
+              description: >
+                The `id` value returned in the response can be used as
+                the `productId` parameter in `GET /products/{productId}`.
+
+        '409':
+          description: Product name already exists
+          content: {}
+    get:
+      tags:
+      - product
+      summary: List products
+      operationId: listProducts
+      parameters:
+      - in: query
+        name: limit
+        description: limit of the items
+        schema:
+          type: integer
+          default: 0
+      - in: query
+        name: offset
+        description: skip items
+        schema:
+          type: integer
+          default: 100
+      responses:
+        '200':
+          description: List products with success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+  /products/{productId}:
+    get:
+      summary: Get product
+      tags:
+      - product
+      operationId: getProduct
+      parameters:
+      - in: path
+        name: productId
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Get product with success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Product not found
+  /catalog:
+    post:
+      summary: Create a new billable
+      tags:
+      - catalog
+      operationId: createBillable
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+              - name
+              - products
+              - amount
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Zomo de morango
+                products:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+                amount:
+                  type: string
+                  example: 33.33
+
+      responses:
+        '201':
+          description: billable created with success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Billable'
+
+          links:
+            GetBillableById:
+              operationId: getBillable
+              parameters:
+                billableId: '$response.body#/id'
+              description: >
+                The `id` value returned in the response can be used as
+                the `billableId` parameter in `GET /catalog/{billableId}`.
+        '404':
+          description: product does not exists
+
+    get:
+      tags:
+      - catalog
+      summary: List billables
+      operationId: listBillables
+      parameters:
+      - in: query
+        name: limit
+        description: limit of the items
+        schema:
+          type: integer
+          default: 0
+      - in: query
+        name: offset
+        description: skip items
+        schema:
+          type: integer
+          default: 100
+      responses:
+        '200':
+          description: List billables with success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Billable'
+
+  /catalog/{billableId}:
+    get:
+      summary: Get billable
+      tags:
+      - catalog
+      operationId: getBillable
+      parameters:
+      - in: path
+        name: billableId
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Get billable with success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Billable'
+        '404':
+          description: Billable not found
+  /sales:
+    post:
+      summary: Create a new sale
+      tags:
+      - sales
+      operationId: createSale
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+              - products
+              - timestamp
+              type: object
+              properties:
+                products:
+                  type: array
+                  items:
+                    required:
+                    - id
+                    - quantity
+                    - amount
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      quantity:
+                        type: integer
+                        example: 1
+                      amount:
+                        type: string
+                        example: 33.33
+                timestamp:
+                  type: string
+                  format: date-time
+
+      responses:
+        '201':
+          description: billable created with success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sale'
+
+          links:
+            GetSaleById:
+              operationId: getSale
+              parameters:
+                saleId: '$response.body#/id'
+              description: >
+                The `id` value returned in the response can be used as
+                the `saleId` parameter in `GET /sales/{saleId}`.
+        '404':
+          description: billable does not exists
+
+    get:
+      tags:
+      - sales
+      summary: List sales
+      operationId: listSales
+      parameters:
+      - in: query
+        name: limit
+        description: limit of the items
+        schema:
+          type: integer
+          default: 0
+      - in: query
+        name: offset
+        description: skip items
+        schema:
+          type: integer
+          default: 100
+      responses:
+        '200':
+          description: List sales with success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Sale'
+
+  /sales/{saleId}:
+    get:
+      summary: Get sale
+      tags:
+      - sales
+      operationId: getSale
+      parameters:
+      - in: path
+        name: saleId
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Get sale with success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sale'
+        '404':
+          description: Sale not found
+
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          example: Zomo de Morango
+        tags:
+          description: unique values in lower case
+          type: array
+          items:
+            type: string
+          example:
+            - zomo
+            - essencia
+    Billable:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          example: Zomo de Morango
+        products:
+          type: array
+          items:
+            type: string
+            format: uuid
+        amount:
+          type: string
+          example: 33.33
+    Sale:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        timestamp:
+          type: string
+          format: date-time
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              quantity:
+                type: integer
+                example: 1
+              amount:
+                type: string
+                example: "33.33"

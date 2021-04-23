@@ -1,3 +1,0 @@
-plugins {
-  id 'inout.java-common-conventions'
-}

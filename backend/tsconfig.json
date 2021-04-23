@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "baseUrl": "./",
+    "paths": {
+      "@app/*": ["src/*"],
+      "@test/*": ["test/*"]
+    },
+    "outDir": "dist",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "incremental": true,
+    "esModuleInterop": true,
+    "types": ["reflect-metadata"],
+    "target": "esnext",
+    "module": "commonjs",
+    "moduleResolution": "node"
+  },
+  "include": [
+    "src",
+    "test"
+  ]
+}
