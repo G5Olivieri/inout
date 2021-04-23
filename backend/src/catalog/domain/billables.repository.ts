@@ -1,7 +1,7 @@
 import { Optional } from '@app/lib/optional/optional'
 import { UUID } from '@app/lib/uuid/uuid'
-import { Billable } from '@app/sales/billables/domain/billable'
-import { GetAllBillablesFilter } from '@app/sales/billables/domain/get-all-billables.filter'
+import { Billable } from '@app/catalog/domain/billable'
+import { GetAllBillablesFilter } from '@app/catalog/domain/get-all-billables.filter'
 import { injectable } from 'inversify'
 
 export interface SaveListener {

@@ -1,5 +1,5 @@
 import { UUID } from '@app/lib/uuid/uuid'
-import { Billable } from '@app/sales/billables/domain/billable'
+import { Billable } from '@app/catalog/domain/billable'
 import { Decimal } from 'decimal.js-light'
 
 export class BillableCreated {

@@ -1,7 +1,7 @@
 import { Query } from '@app/common/query'
-import { Billable } from '@app/sales/billables/domain/billable'
-import { BillablesRepository } from '@app/sales/billables/domain/billables.repository'
-import { GetAllBillablesFilter } from '@app/sales/billables/domain/get-all-billables.filter'
+import { Billable } from '@app/catalog/domain/billable'
+import { BillablesRepository } from '@app/catalog/domain/billables.repository'
+import { GetAllBillablesFilter } from '@app/catalog/domain/get-all-billables.filter'
 import { inject, injectable } from 'inversify'
 
 @injectable()

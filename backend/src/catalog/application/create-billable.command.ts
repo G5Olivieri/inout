@@ -1,9 +1,9 @@
 import { Command } from '@app/common/command'
 import { EventPublisher } from '@app/domain-events/event-publisher'
-import { Billable } from '@app/sales/billables/domain/billable'
-import { BillableCreated } from '@app/sales/billables/domain/billable-created'
-import { BillablesRepository } from '@app/sales/billables/domain/billables.repository'
-import { TriedCreateBillableForNonexistentProduct } from '@app/sales/billables/domain/tried-create-billable-for-nonexistent-product'
+import { Billable } from '@app/catalog/domain/billable'
+import { BillableCreated } from '@app/catalog/domain/billable-created'
+import { BillablesRepository } from '@app/catalog/domain/billables.repository'
+import { TriedCreateBillableForNonexistentProduct } from '@app/catalog/domain/tried-create-billable-for-nonexistent-product'
 import { inject, injectable } from 'inversify'
 
 @injectable()

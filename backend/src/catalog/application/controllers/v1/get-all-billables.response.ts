@@ -1,4 +1,4 @@
-import { Billable } from '@app/sales/billables/domain/billable'
+import { Billable } from '@app/catalog/domain/billable'
 
 export class GetAllBillablesItemResponse {
   public constructor(
@@ -18,9 +18,9 @@ export class GetAllBillablesItemResponse {
   }
 
   public static fromBillables(
-    pagination: Billable[]
+    billables: Billable[]
   ): GetAllBillablesItemResponse[] {
-    return pagination.map((Billable) =>
+    return billables.map((Billable) =>
       GetAllBillablesItemResponse.fromBillable(Billable)
     )
   }

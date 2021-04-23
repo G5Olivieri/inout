@@ -1,14 +1,14 @@
 import { EventSubscriber } from '@app/domain-events/event-subscriber'
 import { UUID } from '@app/lib/uuid/uuid'
-import { CreateBillableResponse } from '@app/sales/billables/application/controllers/v1/create-billable.response'
+import { CreateBillableResponse } from '@app/catalog/application/controllers/v1/create-billable.response'
 import {
   CreateBillableRequest,
   createBillableSchema,
-} from '@app/sales/billables/application/controllers/v1/create-billable.request'
-import { CreateBillableCommand } from '@app/sales/billables/application/create-billable.command'
-import { Billable } from '@app/sales/billables/domain/billable'
-import { BillableCreated } from '@app/sales/billables/domain/billable-created'
-import { TriedCreateBillableForNonexistentProduct } from '@app/sales/billables/domain/tried-create-billable-for-nonexistent-product'
+} from '@app/catalog/application/controllers/v1/create-billable.request'
+import { CreateBillableCommand } from '@app/catalog/application/create-billable.command'
+import { Billable } from '@app/catalog/domain/billable'
+import { BillableCreated } from '@app/catalog/domain/billable-created'
+import { TriedCreateBillableForNonexistentProduct } from '@app/catalog/domain/tried-create-billable-for-nonexistent-product'
 import { Decimal } from 'decimal.js-light'
 import express from 'express'
 import { inject } from 'inversify'
@@ -20,7 +20,7 @@ import {
   interfaces,
 } from 'inversify-express-utils'
 
-@controller('/api/v1/sales/billables')
+@controller('/api/v1/catalog')
 export class CreateBillableController extends BaseHttpController {
   private response: interfaces.IHttpActionResult = this.ok()
 

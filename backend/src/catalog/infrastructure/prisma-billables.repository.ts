@@ -1,12 +1,12 @@
 import { PrismaClient } from '.prisma/client'
 import { Optional } from '@app/lib/optional/optional'
 import { UUID } from '@app/lib/uuid/uuid'
-import { Billable } from '@app/sales/billables/domain/billable'
+import { Billable } from '@app/catalog/domain/billable'
 import {
   BillablesRepository,
   SaveListener,
-} from '@app/sales/billables/domain/billables.repository'
-import { GetAllBillablesFilter } from '@app/sales/billables/domain/get-all-billables.filter'
+} from '@app/catalog/domain/billables.repository'
+import { GetAllBillablesFilter } from '@app/catalog/domain/get-all-billables.filter'
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime'
 import Decimal from 'decimal.js-light'
 import { inject, injectable } from 'inversify'

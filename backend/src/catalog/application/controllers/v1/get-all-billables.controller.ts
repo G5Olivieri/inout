@@ -1,5 +1,5 @@
-import { GetAllBillablesItemResponse } from '@app/sales/billables/application/controllers/v1/get-all-billables.response'
-import { GetAllBillablesQuery } from '@app/sales/billables/application/get-all-billables.query'
+import { GetAllBillablesItemResponse } from '@app/catalog/application/controllers/v1/get-all-billables.response'
+import { GetAllBillablesQuery } from '@app/catalog/application/get-all-billables.query'
 import { inject } from 'inversify'
 import {
   BaseHttpController,
@@ -9,7 +9,7 @@ import {
   queryParam,
 } from 'inversify-express-utils'
 
-@controller('/api/v1/sales/billables')
+@controller('/api/v1/catalog')
 export class GetAllBillablesController extends BaseHttpController {
   public constructor(
     @inject(GetAllBillablesQuery)

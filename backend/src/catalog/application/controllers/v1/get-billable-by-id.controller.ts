@@ -7,10 +7,10 @@ import {
   requestParam,
 } from 'inversify-express-utils'
 import { UUID } from '@app/lib/uuid/uuid'
-import { GetBillableByIdQuery } from '@app/sales/billables/application/get-billable-by-id.query'
-import { GetBillableByIdResponse } from '@app/sales/billables/application/controllers/v1/get-billable-by-id.response'
+import { GetBillableByIdQuery } from '@app/catalog/application/get-billable-by-id.query'
+import { GetBillableByIdResponse } from '@app/catalog/application/controllers/v1/get-billable-by-id.response'
 
-@controller('/api/v1/sales/billables/:billableId')
+@controller('/api/v1/catalog/:billableId')
 export class GetBillableByIdController extends BaseHttpController {
   public constructor(
     @inject(GetBillableByIdQuery)

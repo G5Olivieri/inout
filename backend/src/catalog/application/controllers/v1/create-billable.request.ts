@@ -1,4 +1,4 @@
-import { Decimal } from '@prisma/client/runtime'
+import { Decimal } from 'decimal.js-light'
 import * as z from 'zod'
 
 export const createBillableSchema = z.object({

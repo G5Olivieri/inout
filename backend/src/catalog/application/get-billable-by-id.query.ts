@@ -1,8 +1,8 @@
 import { Query } from '@app/common/query'
 import { Optional } from '@app/lib/optional/optional'
 import { UUID } from '@app/lib/uuid/uuid'
-import { Billable } from '@app/sales/billables/domain/billable'
-import { BillablesRepository } from '@app/sales/billables/domain/billables.repository'
+import { Billable } from '@app/catalog/domain/billable'
+import { BillablesRepository } from '@app/catalog/domain/billables.repository'
 import { inject, injectable } from 'inversify'
 
 @injectable()

@@ -1,4 +1,4 @@
-import { BillableCreated } from '@app/sales/billables/domain/billable-created'
+import { BillableCreated } from '@app/catalog/domain/billable-created'
 
 export class CreateBillableResponse {
   public constructor(
