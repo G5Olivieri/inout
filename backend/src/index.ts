@@ -17,3 +17,12 @@ process.on('SIGTERM', () => {
     console.log('HTTP server closed')
   })
 })
+
+process.on('SIGINT', () => {
+  console.log('\nSIGTINT signal received: closing HTTP server')
+  server.close(() => {
+    console.log('Disconnecting database')
+    diContainer.get(PrismaClient).$disconnect()
+    console.log('HTTP server closed')
+  })
+})

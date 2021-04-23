@@ -84,14 +84,16 @@ paths:
         description: limit of the items
         schema:
           type: integer
+          default: 0
       - in: query
         name: offset
         description: skip items
         schema:
           type: integer
+          default: 100
       responses:
         '200':
-          description: List product with success
+          description: List products with success
           content:
             application/json:
               schema:
@@ -167,6 +169,35 @@ paths:
                 the `billableId` parameter in `GET /sales/billables/{billableId}`.
         '404':
           description: product does not exists
+
+    get:
+      tags:
+      - sales
+      summary: List billables
+      operationId: listBillables
+      parameters:
+      - in: query
+        name: limit
+        description: limit of the items
+        schema:
+          type: integer
+          default: 0
+      - in: query
+        name: offset
+        description: skip items
+        schema:
+          type: integer
+          default: 100
+      responses:
+        '200':
+          description: List billables with success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Billable'
+
   /sales/billables/{billableId}:
     get:
       summary: Get billable

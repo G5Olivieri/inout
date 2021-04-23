@@ -19,9 +19,9 @@ export class CreateBillableCommand implements Command {
     return this.repository.save(billable, {
       onSuccess: (billable) =>
         this.publisher.publish(BillableCreated.fromBillable(billable)),
-      onProductNotFound: (billable, productId) =>
+      onProductNotFound: (billable) =>
         this.publisher.publish(
-          new TriedCreateBillableForNonexistentProduct(billable.id, productId)
+          TriedCreateBillableForNonexistentProduct.fromBillable(billable)
         ),
     })
   }

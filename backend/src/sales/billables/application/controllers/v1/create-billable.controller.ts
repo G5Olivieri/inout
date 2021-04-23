@@ -20,7 +20,7 @@ import {
   interfaces,
 } from 'inversify-express-utils'
 
-@controller('/api/v1/sales/catalog/billables')
+@controller('/api/v1/sales/billables')
 export class CreateBillableController extends BaseHttpController {
   private response: interfaces.IHttpActionResult = this.ok()
 
@@ -55,7 +55,7 @@ export class CreateBillableController extends BaseHttpController {
   private mapRequestToDomain(request: CreateBillableRequest): Billable {
     return new Billable(
       UUID.randomUUID(),
-      new Set(request.products.map(UUID.fromString)),
+      request.products.map(UUID.fromString),
       request.name,
       new Decimal(request.amount)
     )

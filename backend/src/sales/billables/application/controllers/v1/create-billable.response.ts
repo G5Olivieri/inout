@@ -15,7 +15,7 @@ export class CreateBillableResponse {
       event.id.toString(),
       event.name,
       event.amount.toString(),
-      Array.from(event.products).map((product) => product.toString())
+      event.products.map((product) => product.toString())
     )
   }
 }

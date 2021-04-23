@@ -7,7 +7,7 @@ export class BillableCreated {
     public readonly id: UUID,
     public readonly name: string,
     public readonly amount: Decimal,
-    public readonly products: Set<UUID>
+    public readonly products: Array<UUID>
   ) {}
 
   public static fromBillable(billable: Billable): BillableCreated {

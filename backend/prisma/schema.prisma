@@ -14,7 +14,19 @@ model Product {
   id String @default(uuid()) @id
   name String @unique
   tags String
+  billables Billable[]
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt
   @@map("products")
+}
+
+model Billable {
+  id String @default(uuid()) @id
+  name String
+  amount String
+  products Product[]
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt
+
+  @@map("billables")
 }
