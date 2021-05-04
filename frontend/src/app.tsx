@@ -1,18 +1,17 @@
 import React from 'react';
-import {  
+import {
   BrowserRouter as Router,
   Switch,
   Route,
 } from 'react-router-dom';
+import Home from './home';
 
 function App() {
   return (
     <Router>
       <Switch>
         <Route exact path='/'>
-          <div>
-            <h1>Home</h1>
-          </div>
+          <Home />
         </Route>
         <Route exact path='/products'>
           <div>
@@ -32,7 +31,7 @@ function App() {
 
       </Switch>
 
-    </Router> 
+    </Router>
   );
 }
 
