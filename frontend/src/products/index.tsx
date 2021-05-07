@@ -4,12 +4,14 @@ import {
   Switch,
   Route,
 } from 'react-router-dom';
+import CreateProduct from './create';
+
 const Products: React.FC = () => {
   return (
     <Router>
       <Switch>
         <Route exact path='/products'>Listar</Route>
-        <Route exact path='/products/create'>Criar</Route>
+        <Route exact path='/products/create'><CreateProduct /></Route>
       </Switch>
     </Router>
   );
