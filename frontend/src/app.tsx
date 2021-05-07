@@ -5,7 +5,7 @@ import {
   Route,
 } from 'react-router-dom';
 import Home from './home';
-import Products from './products/index';
+import Products from './products';
 
 function App() {
   return (
