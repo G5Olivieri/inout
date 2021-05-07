@@ -5,6 +5,7 @@ import {
   Route,
 } from 'react-router-dom';
 import Home from './home';
+import Products from './products/index';
 
 function App() {
   return (
@@ -13,10 +14,8 @@ function App() {
         <Route exact path='/'>
           <Home />
         </Route>
-        <Route exact path='/products'>
-          <div>
-            <h1>Produtos</h1>
-          </div>
+        <Route path='/products'>
+          <Products />
         </Route>
         <Route exact path='/sales'>
           <div>
