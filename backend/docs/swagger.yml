@@ -10,8 +10,7 @@ servers:
     description: Local development server
 tags:
   - name: product
-  - name: catalog
-  - name: sales
+  - name: tag
 
 paths:
   /products:
@@ -37,31 +36,19 @@ paths:
                   type: array
                   items:
                     type: string
-                  example:
-                    - zomo
-                    - essencia
+                    format: uuid
       responses:
         '201':
           description: Product created with success
           headers:
             Location:
-              description: path to get created product
+              description: resource path of the product created
               schema:
                 type: string
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: string
-                    format: uuid
-                  name:
-                    type: string
-                  tags:
-                    type: array
-                    items:
-                      type: string
+                $ref: '#/components/schemas/Product'
           links:
             GetProductById:
               operationId: getProduct
@@ -70,28 +57,17 @@ paths:
               description: >
                 The `id` value returned in the response can be used as
                 the `productId` parameter in `GET /products/{productId}`.
-
         '409':
           description: Product name already exists
-          content: {}
+        '400':
+          description: Invalid request
+        '404':
+          description: Tag not found
     get:
       tags:
       - product
       summary: List products
       operationId: listProducts
-      parameters:
-      - in: query
-        name: limit
-        description: limit of the items
-        schema:
-          type: integer
-          default: 0
-      - in: query
-        name: offset
-        description: skip items
-        schema:
-          type: integer
-          default: 100
       responses:
         '200':
           description: List products with success
@@ -123,212 +99,269 @@ paths:
                 $ref: '#/components/schemas/Product'
         '404':
           description: Product not found
-  /catalog:
-    post:
-      summary: Create a new billable
+    put:
       tags:
-      - catalog
-      operationId: createBillable
+        - product
+      summary: Update the product
+      operationId: updateProduct
+      parameters:
+      - in: path
+        name: productId
+        required: true
+        schema:
+          type: string
+          format: uuid
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              required:
-              - name
-              - products
-              - amount
               type: object
+              required:
+                - name
+                - tags
               properties:
                 name:
                   type: string
-                  example: Zomo de morango
-                products:
+                  example: Zomo de Morango
+                tags:
                   type: array
                   items:
                     type: string
                     format: uuid
-                amount:
-                  type: string
-                  example: 33.33
-
-      responses:
-        '201':
-          description: billable created with success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Billable'
-
-          links:
-            GetBillableById:
-              operationId: getBillable
-              parameters:
-                billableId: '$response.body#/id'
-              description: >
-                The `id` value returned in the response can be used as
-                the `billableId` parameter in `GET /catalog/{billableId}`.
-        '404':
-          description: product does not exists
-
-    get:
-      tags:
-      - catalog
-      summary: List billables
-      operationId: listBillables
-      parameters:
-      - in: query
-        name: limit
-        description: limit of the items
-        schema:
-          type: integer
-          default: 0
-      - in: query
-        name: offset
-        description: skip items
-        schema:
-          type: integer
-          default: 100
       responses:
         '200':
-          description: List billables with success
+          description: Product updated with success
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Billable'
-
-  /catalog/{billableId}:
-    get:
-      summary: Get billable
+                $ref: '#/components/schemas/Product'
+        '409':
+          description: Product name already exists
+        '400':
+          description: Invalid request
+        '404':
+          description: Tag not found
+    patch:
       tags:
-      - catalog
-      operationId: getBillable
+        - product
+      summary: Patch the product
+      operationId: patchProduct
       parameters:
       - in: path
-        name: billableId
+        name: productId
         required: true
         schema:
           type: string
           format: uuid
-      responses:
-        '200':
-          description: Get billable with success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Billable'
-        '404':
-          description: Billable not found
-  /sales:
-    post:
-      summary: Create a new sale
-      tags:
-      - sales
-      operationId: createSale
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              required:
-              - products
-              - timestamp
               type: object
               properties:
-                products:
+                name:
+                  type: string
+                  example: Zomo de Morango
+                tags:
                   type: array
                   items:
-                    required:
-                    - id
-                    - quantity
-                    - amount
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                        format: uuid
-                      quantity:
-                        type: integer
-                        example: 1
-                      amount:
-                        type: string
-                        example: 33.33
-                timestamp:
-                  type: string
-                  format: date-time
-
-      responses:
-        '201':
-          description: billable created with success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Sale'
-
-          links:
-            GetSaleById:
-              operationId: getSale
-              parameters:
-                saleId: '$response.body#/id'
-              description: >
-                The `id` value returned in the response can be used as
-                the `saleId` parameter in `GET /sales/{saleId}`.
-        '404':
-          description: billable does not exists
-
-    get:
-      tags:
-      - sales
-      summary: List sales
-      operationId: listSales
-      parameters:
-      - in: query
-        name: limit
-        description: limit of the items
-        schema:
-          type: integer
-          default: 0
-      - in: query
-        name: offset
-        description: skip items
-        schema:
-          type: integer
-          default: 100
+                    type: string
+                    format: uuid
       responses:
         '200':
-          description: List sales with success
+          description: Product patched with success
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Sale'
-
-  /sales/{saleId}:
-    get:
-      summary: Get sale
+                $ref: '#/components/schemas/Product'
+        '409':
+          description: Product name already exists
+        '404':
+          description: Tag not found
+        '400':
+          description: '`name` or `tags` must be sent'
+    delete:
+      summary: Delete product
       tags:
-      - sales
-      operationId: getSale
+      - product
+      operationId: deleteProduct
       parameters:
       - in: path
-        name: saleId
+        name: productId
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '204':
+          description: Product deleted with success
+        '404':
+          description: Product not found
+
+  /products/{productId}/tags:
+    post:
+      summary: Add product tags
+      tags:
+      - product
+      operationId: addProductTags
+      parameters:
+      - in: path
+        name: productId
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+                format: uuid
+      responses:
+        '204':
+          description: Add product tags with success
+        '400':
+          description: Tag not found
+    get:
+      summary: Get product tags
+      tags:
+      - product
+      operationId: addProductTag
+      parameters:
+      - in: path
+        name: productId
         required: true
         schema:
           type: string
           format: uuid
       responses:
         '200':
-          description: Get sale with success
+          description: Get product tags with success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Sale'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tag'
+  /products/{productId}/tags/{tagId}:
+    delete:
+      summary: Remove product tag
+      tags:
+      - product
+      operationId: removeProductTag
+      parameters:
+      - in: path
+        name: productId
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - in: path
+        name: tagId
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '204':
+          description: Product tag removed with success
         '404':
-          description: Sale not found
-
+          description: Product or Product tag not found
+  /tags:
+    get:
+      tags:
+      - tag
+      summary: List tags
+      operationId: listTags
+      responses:
+        '200':
+          description: List tags with success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tag'
+    post:
+      description: Tag is sanitized (to lower, remove all accentuation and trimmed) before be saved.
+      summary: Create a new tag
+      tags:
+      - tag
+      operationId: createTag
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        '200':
+          description: Tag created with success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+        '409':
+          description: Tag name alread exists
+  /tags/{tagId}:
+    delete:
+      summary: Delete tag
+      tags:
+      - tag
+      operationId: deleteTag
+      parameters:
+      - in: path
+        name: tagId
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '204':
+          description: Tag deleted with success
+        '404':
+          description: Tag not found
+    put:
+      description: Tag is sanitized (to lower, remove all accentuation and trimmed) before be saved.
+      summary: Update tag
+      tags:
+      - tag
+      operationId: updateTag
+      parameters:
+      - in: path
+        name: tagId
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        '200':
+          description: Tag updated with success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+        '404':
+          description: Tag not found
+        '409':
+          description: Tag name alread exists
 components:
   schemas:
     Product:
@@ -340,51 +373,30 @@ components:
         name:
           type: string
           example: Zomo de Morango
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
         tags:
           description: unique values in lower case
           type: array
           items:
-            type: string
-          example:
-            - zomo
-            - essencia
-    Billable:
+            $ref: '#/components/schemas/Tag'
+    Tag:
       type: object
       properties:
         id:
           type: string
           format: uuid
         name:
+          description: unique values in lower case and without accentuation
           type: string
           example: Zomo de Morango
-        products:
-          type: array
-          items:
-            type: string
-            format: uuid
-        amount:
-          type: string
-          example: 33.33
-    Sale:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        timestamp:
+        createdAt:
           type: string
           format: date-time
-        products:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-                format: uuid
-              quantity:
-                type: integer
-                example: 1
-              amount:
-                type: string
-                example: "33.33"
+        updatedAt:
+          type: string
+          format: date-time
