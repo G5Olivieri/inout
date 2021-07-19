@@ -1,0 +1,39 @@
+.container {
+  display: grid;
+  grid-template-columns: 40px auto 40px;
+  grid-template-areas:
+    "remove name quantity"
+    "remove price quantity";
+  grid-gap: 10px;
+  margin: 10px 0;
+  background-color: white;
+  border-radius: 10px;
+  padding-right: 10px;
+  border: 1px solid #d7d7d7;
+
+  .removeButton {
+    grid-area: remove;
+    width: 100%;
+    height: 100%;
+    background-color: #d5d5e3;
+    border: none;
+    border-right: 1px solid #c6c6c6;
+  }
+
+  .name {
+    grid-area: name;
+    place-self: center start;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; // This is where the magic happens
+  }
+
+  .price {
+    grid-area: price;
+  }
+
+  .quantity {
+    grid-area: quantity;
+    place-self: center;
+  }
+}

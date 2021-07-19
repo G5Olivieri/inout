@@ -1,0 +1,11 @@
+.container {
+  background-color: white;
+  margin-bottom: 90px;
+  min-height: calc(100vh - 100px);
+
+  .pageTitle {
+    text-align: center;
+    font-size: 3rem;
+    color: rgba(190, 198, 207);
+  }
+}

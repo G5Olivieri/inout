@@ -1,0 +1,35 @@
+.summaryListItem {
+  padding: 20px 0;
+  width: 90%;
+  margin: 0 auto;
+  display: block;
+
+  .date {
+    display: flex;
+    justify-content: space-between;
+    color: #BEC6CF;
+    margin-bottom: 10px;
+  }
+
+  .latest {
+    li {
+      display: flex;
+      justify-content: space-between;
+
+      .name {
+        width: 190px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis; // This is where the magic happens
+      }
+
+      .in {
+        color: #367315;
+      }
+
+      .out {
+        color: #F00606;
+      }
+    }
+  }
+}

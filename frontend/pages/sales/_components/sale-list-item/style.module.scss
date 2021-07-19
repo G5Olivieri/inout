@@ -1,0 +1,54 @@
+.saleListItem {
+  background: #F2F2F7;
+  border-radius: 16px;
+  margin-top: 10px;
+  padding: 15px;
+
+  header {
+    h2 {
+      font-size: 1rem;
+      color: #1C1C54;
+    }
+  }
+
+  main {
+    margin: 10px 0;
+    color: #81858A;
+    ul {
+      overflow: hidden;
+      li {
+        display: flex;
+        justify-content: space-between;
+      }
+
+    }
+
+    ul.colapse {
+      max-height: 3.5rem;
+      transition: max-height 0.3s ease-out;
+    }
+
+    ul.expand {
+      height: auto;
+      max-height: 1000px;
+      transition: max-height 0.3s ease-in;
+    }
+  }
+
+  footer {
+    border-top: 1px solid rgba(136, 84, 202, 0.24);
+    display: flex;
+    justify-content: space-between;
+    padding-top: 10px;
+    color: #1C1C54;
+    background-color: inherit;
+
+    .expandIcon {
+      transition: all 0.3s;
+    }
+
+    .expandIcon.expand {
+      transform: rotate(-180deg);
+    }
+  }
+}
