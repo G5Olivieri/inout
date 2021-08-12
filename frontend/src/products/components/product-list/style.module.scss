@@ -1,0 +1,20 @@
+.container {
+  .searchInput {
+    width: 100%;
+
+    input {
+      display: block;
+      width: 95%;
+      margin: 0 auto;
+      margin-bottom: 10px;
+      height: 60px;
+      border: 1px solid #8854CA;
+      border-radius: 7px;
+      padding-left: 10px;
+      &:focus {
+        border-width: 2px;
+      }
+    }
+  }
+  .productList { }
+}

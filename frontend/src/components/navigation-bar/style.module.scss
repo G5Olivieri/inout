@@ -1,0 +1,129 @@
+.navigation {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  background-color: #F2F2F7;
+
+  ul {
+    display: flex;
+    justify-content: space-around;
+    width: 375px;
+    margin: 0 auto;
+
+    li {
+      display: block;
+
+      padding: 10px 0;
+
+      .plusButton {
+        background-color: #A250CC;
+        border: none;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        color: white;
+        cursor: pointer;
+
+        span {
+          font-size: 40pt;
+          position: relative;
+          bottom: 5px;
+        }
+      }
+
+      a {
+        cursor: pointer;
+        width: 60px;
+        height: 60px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 21px;
+        transition: all .25s ease-out;
+        svg {
+          filter: opacity(40%);
+          width: 45px;
+          height: 45px;
+        }
+      }
+
+      a.active, a.add {
+        svg {
+          filter: opacity(100%);
+        }
+      }
+
+      a.home {
+        svg {
+          fill: #5B62A2;
+        }
+      }
+
+      a.home.active {
+        background-color: #C1C7FF;
+      }
+
+      a.home.add {
+        position: relative;
+        transform: translate(-150px, 0px);
+      }
+
+      a.products {
+        svg {
+          fill: #C6281E;
+        }
+      }
+
+      a.products.active {
+        background-color: #FFC9C5;
+      }
+
+      a.products.add {
+        position: relative;
+        transform: translate(75px, -80px);
+        background-color: #C6281E;
+        svg {
+          fill: white;
+        }
+      }
+
+      a.sales {
+        svg {
+          fill: #FF7A00;
+        }
+      }
+
+      a.sales.active {
+        background-color: #FFDEBF;
+      }
+
+      a.sales.add {
+        position: relative;
+        transform: translate(-75px, -150px);
+        background-color: #FF7A00;
+        svg {
+          fill: white;
+        }
+      }
+
+      a.purchases {
+        svg {
+          fill:  #2EB123;
+        }
+      }
+
+      a.purchases.active {
+        background-color: #B8F9B3;
+      }
+
+      a.purchases.add {
+        position: relative;
+        transform: translate(-150px, -220px);
+        background-color: #2EB123;
+        svg {
+          fill: white;
+        }
+      }
+    }
+  }
+}
