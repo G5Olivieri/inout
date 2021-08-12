@@ -19,10 +19,12 @@ public class ProductsResourceTest {
 
     @Test
     public void testCRUD() throws JsonProcessingException {
+        String path = "/api/v1/products";
+        String pathWithId = path + "/{id}";
         given()
                 .contentType(ContentType.JSON)
         .when()
-                .get("/products")
+                .get(path)
         .then()
                 .statusCode(200)
                 .body(is("[]"));
@@ -31,7 +33,7 @@ public class ProductsResourceTest {
                 .contentType(ContentType.JSON)
                 .body(mapper.writeValueAsBytes(Map.of("name", "Glayson", "price", 1L, "quantity", 1L)))
         .when()
-                .post("/products")
+                .post(path)
         .then()
                 .statusCode(201)
                 .header("Location", endsWith("/products/1"));
@@ -39,7 +41,7 @@ public class ProductsResourceTest {
         given()
                 .contentType(ContentType.JSON)
         .when()
-                .get("/products")
+                .get(path)
         .then()
                 .statusCode(200)
                 .body("size()", is(1));
@@ -48,7 +50,7 @@ public class ProductsResourceTest {
                 .contentType(ContentType.JSON)
                 .pathParam("id", "1")
         .when()
-                .get("/products/{id}")
+                .get(pathWithId)
         .then()
                 .statusCode(200)
                 .body("id", equalTo(1))
@@ -61,7 +63,7 @@ public class ProductsResourceTest {
                 .pathParam("id", "1")
                 .body(mapper.writeValueAsBytes(Map.of("name", "Glayson", "price", 1, "quantity", 10)))
         .when()
-                .put("/products/{id}")
+                .put(pathWithId)
         .then()
                 .statusCode(204);
 
@@ -69,7 +71,7 @@ public class ProductsResourceTest {
                 .contentType(ContentType.JSON)
                 .pathParam("id", "1")
         .when()
-                .get("/products/{id}")
+                .get(pathWithId)
         .then()
                 .statusCode(200)
                 .body("id", equalTo(1))
@@ -81,7 +83,7 @@ public class ProductsResourceTest {
                 .contentType(ContentType.JSON)
                 .pathParam("id", "1")
         .when()
-                .delete("/products/{id}")
+                .delete(pathWithId)
         .then()
                 .statusCode(204);
 
@@ -89,14 +91,14 @@ public class ProductsResourceTest {
                 .contentType(ContentType.JSON)
                 .pathParam("id", "1")
         .when()
-                .delete("/products/{id}")
+                .delete(pathWithId)
         .then()
                 .statusCode(404);
 
         given()
                 .contentType(ContentType.JSON)
         .when()
-                .get("/products")
+                .get(path)
         .then()
                 .statusCode(200)
                 .body(is("[]"));

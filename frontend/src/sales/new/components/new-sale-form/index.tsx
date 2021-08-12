@@ -2,60 +2,42 @@ import React, { FormEventHandler, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { Product } from '../../../../services/products';
-import { SelectProduct } from './select-product';
+import { CreateSale } from '../../../../services/sales';
 import { SelectedProduct } from './selected-product';
 import style from './style.module.scss';
 
 
 type NewSaleFormProps = {
-  products: Array<Product>
+  hasAvailableProducts: boolean
+  selectedProducts: Array<Product>
+  unselect: (product: Product) => void
+  onSubmit: (sale: CreateSale) => void
+  onAddProducts: () => void
+  getOriginalProduct: (product: Product) => Product
+  onQuantityChange: (value: number, product: Product) => void
 }
 
-export const NewSaleForm: React.FC<NewSaleFormProps> = ({ products }) => {
-  const [availableProducts, setAvailableProducts] = useState<Array<Product>>(products)
-  const [selectedProducts, setSelectedProducts] = useState<Array<Product>>([])
-  const [addProduct, setAddProduct] = useState(false)
+export const NewSaleForm: React.FC<NewSaleFormProps> = ({
+    hasAvailableProducts,
+    onQuantityChange,
+    getOriginalProduct,
+    unselect,
+    selectedProducts,
+    onSubmit,
+    onAddProducts
+  }) => {
   const [date, setDate] = useState(new Date())
 
-  const onAddProduct = () => {
-    setAddProduct(!addProduct)
-  }
-
-  const onSelect = (product: Product) => {
-    setSelectedProducts([...selectedProducts, { ...product, quantity: 1 }])
-    setAvailableProducts(availableProducts.filter((p) => p.id !== product.id))
-    setAddProduct(false)
-  }
-
-  const unselect = (product: Product) => {
-    const availableProduct = getOriginalProduct(product)
-    setSelectedProducts(selectedProducts.filter(p => product.id !== p.id))
-    setAvailableProducts([...availableProducts, availableProduct].sort((a, b) => a.id - b.id))
-  }
-
-  const onSubmit: FormEventHandler<HTMLFormElement> = (event) => {
+  const onSubmitWrapper: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault()
-    console.log({
-      date: date.toISOString(),
-      products: selectedProducts
+    onSubmit({
+      date: date,
+      products: selectedProducts.map(({ id, price, quantity }) => ({
+        id,
+        price,
+        quantity
+      }))
     })
-  }
-
-  const onQuantityChange = (value: number, product: Product) => {
-    const index = selectedProducts.findIndex((p) => p.id === product.id)
-    if (index < 0) {
-      return
-    }
-    selectedProducts[index].quantity = value
-    setSelectedProducts(selectedProducts)
-  }
-
-  const getOriginalProduct = (product: Product) => {
-    const originalProduct = products.find((p) => product.id === p.id)
-    if (!originalProduct) {
-      throw new Error("Product nonexistent in products")
-    }
-    return originalProduct
   }
 
   const onDateChange = (d: Date) => {
@@ -63,8 +45,8 @@ export const NewSaleForm: React.FC<NewSaleFormProps> = ({ products }) => {
   }
 
   return (
-    <form className={style.container} onSubmit={onSubmit}>
-      <h1 className={style.title}>Criar Venda</h1>
+    <form className={style.container} onSubmit={onSubmitWrapper}>
+      <h1 className={style.title}>Venda</h1>
       <DatePicker
         className={style.date}
         onChange={onDateChange}
@@ -85,13 +67,10 @@ export const NewSaleForm: React.FC<NewSaleFormProps> = ({ products }) => {
             )
           }
         </ul>}
-      {addProduct &&
-        <SelectProduct
-          products={availableProducts}
-          onSelect={onSelect}
-        />}
-      {availableProducts.length > 0 && <button className={style.addProductButton} onClick={onAddProduct} type="button">Adicionar produto</button>}
-      <button className={style.primaryButton} type="submit">Criar venda</button>
+      {hasAvailableProducts
+        && <button className={style.addProductButton} onClick={onAddProducts} type="button">Adicionar produto</button>}
+      {selectedProducts.length > 0
+        && <button className={style.primaryButton} type="submit">Criar</button>}
     </form>
   )
 }

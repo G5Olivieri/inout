@@ -1,6 +1,5 @@
 .navigation {
   width: 100%;
-  margin: 10px 0 auto auto;
   position: fixed;
   bottom: 0;
   background-color: #F2F2F7;
@@ -43,6 +42,8 @@
         transition: all .25s ease-out;
         svg {
           filter: opacity(40%);
+          width: 45px;
+          height: 45px;
         }
       }
 
@@ -50,6 +51,21 @@
         svg {
           filter: opacity(100%);
         }
+      }
+
+      a.home {
+        svg {
+          fill: #5B62A2;
+        }
+      }
+
+      a.home.active {
+        background-color: #C1C7FF;
+      }
+
+      a.home.add {
+        position: relative;
+        transform: translate(-150px, 0px);
       }
 
       a.products {
@@ -64,7 +80,7 @@
 
       a.products.add {
         position: relative;
-        transform: translate(150px, -80px);
+        transform: translate(75px, -80px);
         background-color: #C6281E;
         svg {
           fill: white;
@@ -83,7 +99,7 @@
 
       a.sales.add {
         position: relative;
-        transform: translate(75px, -150px);
+        transform: translate(-75px, -150px);
         background-color: #FF7A00;
         svg {
           fill: white;
@@ -102,27 +118,8 @@
 
       a.purchases.add {
         position: relative;
-        transform: translate(-75px, -220px);
+        transform: translate(-150px, -220px);
         background-color: #2EB123;
-        svg {
-          fill: white;
-        }
-      }
-
-      a.tickets {
-        svg {
-          fill:  #930FA9;
-        }
-      }
-
-      a.tickets.active {
-        background-color: #F3A9FF;
-      }
-
-      a.tickets.add {
-        position: relative;
-        transform: translate(-150px, -290px);
-        background-color:  #930FA9;
         svg {
           fill: white;
         }

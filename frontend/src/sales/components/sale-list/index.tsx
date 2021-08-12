@@ -1,7 +1,6 @@
 import style from './style.module.scss'
-import SaleListItem from '../sale-list-item'
-// TODO: use service
-import { Sale } from '../../sale'
+import { SaleListItem } from '../sale-list-item'
+import { Sale } from '../../../services/sales'
 
 type SaleListProps = {
   sales: Array<Sale>

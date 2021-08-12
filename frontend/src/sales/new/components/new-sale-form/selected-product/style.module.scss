@@ -21,6 +21,7 @@
   }
 
   .name {
+    width: 100%;
     grid-area: name;
     place-self: center start;
     white-space: nowrap;

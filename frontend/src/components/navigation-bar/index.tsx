@@ -1,8 +1,5 @@
-import { useState } from 'react'
-import ProductsIcon from './icons/products-icon'
-import SalesIcon from './icons/sales-icon'
-import PurchasesIcon from './icons/purchases-icon'
-import TicketsIcon from './icons/tickets-icon'
+import React, { useState } from 'react'
+import { ProductsIcon, SalesIcon, PurchasesIcon, HomeIcon } from './icons'
 import { NavigationBarPages } from './navigation-pages'
 import { NavigationLink } from './navigation-link'
 import style from './style.module.scss'
@@ -11,18 +8,26 @@ type NavigationBarProps = {
   page: NavigationBarPages
 }
 
-// TODO: remove default and change to const
-export default function NavigationBar({ page }: NavigationBarProps) {
+export const NavigationBar: React.FC<NavigationBarProps> = ({ page }) => {
   const [addFocus, setAddFocus] = useState(false)
 
-  // TODO: change to const
-  function onClick() {
+  const onClick = () => {
     setAddFocus(!addFocus)
   }
 
   return (
     <nav className={style.navigation}>
       <ul>
+        <li>
+          <NavigationLink
+            pageClassName={style.home}
+            isAddFocus={addFocus}
+            active={page === NavigationBarPages.home}
+            icon={<HomeIcon />}
+            pagePath="/"
+            onClick={() => setAddFocus(false)}
+          />
+        </li>
         <li>
           <NavigationLink
             pageClassName={style.products}
@@ -32,6 +37,9 @@ export default function NavigationBar({ page }: NavigationBarProps) {
             pagePath="/products"
             onClick={() => setAddFocus(false)}
           />
+        </li>
+        <li>
+          <button className={style.plusButton} onClick={onClick}><span>+</span></button>
         </li>
         <li>
           <NavigationLink
@@ -44,25 +52,12 @@ export default function NavigationBar({ page }: NavigationBarProps) {
           />
         </li>
         <li>
-          <button className={style.plusButton} onClick={onClick}><span>+</span></button>
-        </li>
-        <li>
           <NavigationLink
             pageClassName={style.purchases}
             isAddFocus={addFocus}
             active={page === NavigationBarPages.purchases}
             icon={<PurchasesIcon />}
             pagePath="/purchases"
-            onClick={() => setAddFocus(false)}
-          />
-        </li>
-        <li>
-          <NavigationLink
-            pageClassName={style.tickets}
-            isAddFocus={addFocus}
-            active={page === NavigationBarPages.tickets}
-            icon={<TicketsIcon />}
-            pagePath="/tickets"
             onClick={() => setAddFocus(false)}
           />
         </li>

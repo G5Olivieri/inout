@@ -1,3 +1,5 @@
+.PHONY: up logs down shel docker_build_image build
+
 up:
 	docker-compose up -d
 
@@ -10,3 +12,9 @@ down:
 
 shell:
 	docker-compose run --rm app sh
+
+build:
+	docker-compose run --rm app sh -c "yarn build"
+
+docker_build_image:
+	docker build -t "inout-frontend" .

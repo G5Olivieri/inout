@@ -1,7 +1,16 @@
 .container {
   background-color: white;
-  margin-bottom: 90px;
-  min-height: calc(100vh - 100px);
+
+  .loadMoreButton {
+    height: 60px;
+    background-color: #8854CA;
+    color: white;
+    font-size: 1.5rem;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    width: 100%;
+  }
 
   .pageTitle {
     text-align: center;

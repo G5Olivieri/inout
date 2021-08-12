@@ -2,8 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ptBR from 'date-fns/locale/pt-BR';
 import { registerLocale, setDefaultLocale } from 'react-datepicker'
-import './index.css';
 import App from './App';
+
+import "./global.scss"
 
 registerLocale('pt-BR', ptBR)
 setDefaultLocale('pt-BR')

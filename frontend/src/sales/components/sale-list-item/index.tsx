@@ -1,10 +1,11 @@
+import { format } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
 import { useState } from 'react'
-// TODO: use service
-import { Sale, Product } from '../../sale'
+import { Sale, SaleProduct } from '../../../services/sales'
 import style from './style.module.scss'
 
 type ProductSaleProps = {
-  product: Product
+  product: SaleProduct
 }
 
 const ProductSale: React.FC<ProductSaleProps> = ({ product }) => {
@@ -13,7 +14,7 @@ const ProductSale: React.FC<ProductSaleProps> = ({ product }) => {
       <span>{product.name} ({product.quantity}x)</span>
       <span>
         {/* TODO: move this to currency service */}
-        {Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.amount / 100)}
+        {Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price / 100)}
       </span>
     </li>
   )
@@ -23,9 +24,9 @@ type SaleListItemProps = {
   sale: Sale
 }
 
-// TODO: remove default and change to const
-export default function SaleListItem({ sale }: SaleListItemProps) {
+export const SaleListItem: React.FC<SaleListItemProps> = ({ sale }) => {
   const [colapse, setColapse] = useState(true)
+  const total = sale.products.reduce((acc, cur) => acc + cur.price * cur.quantity, 0)
 
   const onClickMore = () => {
     if (sale.products.length > 3) {
@@ -36,7 +37,7 @@ export default function SaleListItem({ sale }: SaleListItemProps) {
   return (
     <li className={style.saleListItem}>
       <header>
-        <h2>7 Abril, 2021</h2>
+        <h2>{format(new Date(sale.date), 'PP', { locale: ptBR })}</h2>
       </header>
       <main>
         <ul className={colapse ? style.colapse : style.expand}>
@@ -51,7 +52,7 @@ export default function SaleListItem({ sale }: SaleListItemProps) {
         }
         <span>
           {/* TODO: move this to currency service */}
-          {Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(sale.total / 100)}
+          {Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(total / 100)}
         </span>
       </footer>
     </li>
