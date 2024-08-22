@@ -1,0 +1,22 @@
+services:
+  app:
+    build: .
+    command: poetry run python manage.py runserver 0.0.0.0:8080
+    depends_on:
+      - postgres
+    working_dir: /app
+    env_file:
+      - .env
+    environment:
+      POETRY_VIRTUALENVS_PATH: /app/virtualenvs
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+
+  postgres:
+    image: postgres:alpine
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_DB: ${DB_NAME}

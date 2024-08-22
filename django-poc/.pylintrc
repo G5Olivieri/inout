@@ -1,0 +1,6 @@
+[MASTER]
+load-plugins=pylint_django
+
+[MESSAGES CONTROL]
+# Disable some Django-specific warnings that might not be relevant
+disable=missing-module-docstring,missing-class-docstring,missing-function-docstring
