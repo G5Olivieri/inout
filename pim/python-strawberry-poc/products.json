@@ -1,0 +1,22 @@
+{
+    "id": "1",
+    // default attributes
+    "name": "t-shirt",
+    "material": "cotton",
+    "brand": "GGLion",
+    "description": "lorem ipsum",
+    "variants": [
+        {
+            "id": "2",
+            // variant attributes
+            "color": "blue",
+            "size": "large"
+        },
+        {
+            "id": "3",
+            // variant attributes
+            "color": "red",
+            "size": "small"
+        }
+    ]
+}

@@ -1,31 +1,33 @@
+import uuid
+from typing import List
 import strawberry
 from starlette.applications import Starlette
 from strawberry.asgi import GraphQL
 
 
 @strawberry.type
-class User:
+class ProductAttribute:
+    id: strawberry.ID
     name: str
-    age: int
+    value: str
+    to_variant: bool
+
+
+@strawberry.type
+class Product:
+    id: strawberry.ID
+    variant_from: "Product" | None
+    attributes: list[ProductAttribute]
 
 
 @strawberry.type
 class Query:
     @strawberry.field
-    async def user(self) -> User:
-        return User(name="Patrick", age=100)
+    async def hello(self) -> str:
+        return "Hello World!"
 
 
-@strawberry.type
-class Mutation:
-    @strawberry.mutation
-    def add_user(self, name: str, age: int) -> User:
-        print(f"Adding {name} by {age}")
-
-        return User(name=name, age=age)
-
-
-schema = strawberry.Schema(query=Query, mutation=Mutation)
+schema = strawberry.Schema(query=Query)
 graphql_app = GraphQL(schema)
 app = Starlette()
 app.add_route("/graphql", graphql_app)
