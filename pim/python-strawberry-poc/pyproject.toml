@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "pim"
+version = "0.1.0"
+description = "Product Information Management"
+authors = ["G5Olivieri <glayson.murollo75@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+starlette = "^0.38.2"
+uvicorn = "^0.30.6"
+strawberry-graphql = "^0.237.3"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.6.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
